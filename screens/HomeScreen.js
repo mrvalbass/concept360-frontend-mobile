@@ -6,29 +6,73 @@ import {
   Button,
   SafeAreaView,
 } from "react-native";
-import FlaotingTextInput from "../components/floatingTextInput";
+
 import { LinearGradient } from "expo-linear-gradient";
 import * as ImagePicker from "expo-image-picker";
 import { useState, useEffect } from "react";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useSelector } from "react-redux";
-import { login } from "../reducers/user";
+import { addphoto } from "../reducers/user";
+import { useFocusEffect } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import React, { useCallback } from "react";
+import { useDispatch } from "react-redux";
 
 export default function HomeScreen({}) {
   const [hasPermission, setHasPermission] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [profileData, setProfileData] = useState(null);
   const user = useSelector((state) => state.user.value);
 
-  useEffect(() => {
-    (async () => {
-      const userData = await fetch(
-        `http://192.168.143.1:3000/users/token/${user.token}`
-      ).then((r) => r.json());
-      // console.log("prout", userData);
-    })();
-  }, []);
-  // console.log("user is", userData);
+  const dispatch = useDispatch();
 
+  // Récuperer données lors de la connexion grâce au token
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchData = async () => {
+        try {
+          const token = await AsyncStorage.getItem("userToken");
+          console.log("Token is", token);
+          if (token !== null) {
+            const response = await axios.get(
+              `http://192.168.143.1:3000/users/token/${user.token}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+            let responseData = response.data.patient.user;
+            //console.log("Response is", responseData);
+            setProfileData(responseData);
+            // console.log("profile is", response.data);
+          } else {
+            console.log("no token found");
+          }
+        } catch (axiosError) {
+          if (axiosError.response) {
+            // La requête a été faite et le serveur a répondu avec un statut différent de 2xx
+            console.error("Erreur de réponse:", axiosError.response.data);
+            console.error("Statut:", axiosError.response.status);
+            console.error("En-têtes:", axiosError.response.headers);
+          } else if (axiosError.request) {
+            // La requête a été faite mais aucune réponse n'a été reçue
+            console.error("Pas de réponse reçue:", axiosError.request);
+          } else {
+            // Une erreur est survenue lors de la configuration de la requête
+            console.error(
+              "Erreur de configuration de la requête:",
+              axiosError.message
+            );
+          }
+        }
+      };
+      fetchData();
+    }, [])
+  );
+
+  // Récupération de la photo de profil depuis ses images persos et envoi dans coundinary
   useEffect(() => {
     (async () => {
       const { status } = await ImagePicker.getMediaLibraryPermissionsAsync();
@@ -49,10 +93,28 @@ export default function HomeScreen({}) {
         aspect: [4, 3],
         quality: 1,
       });
-      //console.log("res", result.assets[0].uri);
+
+      //console.log("result", result);
       if (!result.canceled) {
         setSelectedImage(result.assets[0].uri);
       }
+      const formData = new FormData();
+      const uri = result.assets[0]?.uri;
+      console.log("uri is", result.assets[0].uri);
+      formData.append("photoFromFront", {
+        uri: uri,
+        name: "photo.jpg",
+        type: "image/jpeg",
+      });
+
+      fetch("http://192.168.143.1:3000/users/upload", {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          data.result && dispatch(addphoto(data.url));
+        });
     }
   };
 
@@ -84,9 +146,11 @@ export default function HomeScreen({}) {
             style={styles.iconProfil}
             onPress={pickImage}
           />
-          <Text style={styles.hello}>
-            Bonjour {user.firstname} {user.lastname}
-          </Text>
+          <View style={styles.containerHello}>
+            <Text style={styles.hello}>
+              Bonjour {profileData?.firstName} {profileData?.lastName}
+            </Text>
+          </View>
         </View>
       )}
     </SafeAreaView>
@@ -118,6 +182,9 @@ const styles = StyleSheet.create({
   iconProfil: {
     color: "white",
     paddingLeft: 100,
+  },
+  containerHello: {
+    alignItems: "",
   },
   hello: {
     fontSize: 25,

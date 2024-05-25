@@ -20,6 +20,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function LoginScreen({ navigation }) {
   const dispatch = useDispatch();
+  const [token, setToken] = useState(null);
   const [signUpOpen, setSignUpOpen] = useState(false);
   const [signInOpen, setSignInOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -45,6 +46,7 @@ export default function LoginScreen({ navigation }) {
     }));
   };
 
+  // Inscription uniquement patient et envoie des informations à la base de données
   const handleSignUp = () => {
     fetch("http://192.168.143.1:3000/users/signup", {
       method: "POST",
@@ -77,22 +79,23 @@ export default function LoginScreen({ navigation }) {
       });
   };
 
+  //Connexion et récupération du token pour avoir accès aux infos du client
   const handleSignin = async () => {
     try {
-      const response = await fetch("http://192.168.143.1:3000/users/signin", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      const response = await axios.post(
+        "http://192.168.143.1:3000/users/signin",
+        {
           email: inData.email,
           password: inData.password,
-        }),
-      });
-      const data = await response.json();
-      console.log("response is", response);
-      console.log("data is", data);
-      console.log("dataToken", data.token);
+        }
+      );
+      const data = await response.data;
+      //console.log("response is", response);
+      //console.log("data is", data);
+      //console.log("dataToken", data.token);
       if (response.status === 200 && data.token) {
         await AsyncStorage.setItem("userToken", data.token);
+        setToken(response.data.token);
 
         dispatch(
           login({
@@ -113,32 +116,6 @@ export default function LoginScreen({ navigation }) {
       Alert.alert("Erreur", "Une erreur s'est produite. Veuillez réessayer.");
     }
   };
-
-  // const handleSignin = () => {
-  //   fetch("http://192.168.143.1:3000/users/signin", {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify({
-  //       email: inData.email,
-  //       password: inData.password,
-  //     }),
-  //   })
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       dispatch(
-  //         login({
-  //           email: inData.email,
-  //           password: inData.password,
-  //           token: data.token,
-  //         })
-  //       );
-  //       setInData({
-  //         email: "",
-  //         password: "",
-  //       });
-  //       navigation.navigate("TabNavigator", { screen: "Home" });
-  //     });
-  // };
 
   const handleOpenSignUp = () => {
     setSignUpOpen(true);
