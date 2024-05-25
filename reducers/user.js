@@ -6,6 +6,7 @@ const initialState = {
     lastname: null,
     email: null,
     token: null,
+    photos: [],
   },
 };
 
@@ -24,6 +25,9 @@ userSlice = createSlice({
       state.value.username = null;
       state.value.email = null;
       state.value.token = null;
+    },
+    addPhoto: (state, action) => {
+      state.value.photos.push(action.payload);
     },
   },
 });
