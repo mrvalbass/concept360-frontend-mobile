@@ -46,7 +46,7 @@ export default function LoginScreen({ navigation }) {
   };
 
   const handleSignUp = () => {
-    fetch("http://192.168.143.1:3000/users/signup", {
+    fetch("http://192.168.85.124:3000/users/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -79,7 +79,7 @@ export default function LoginScreen({ navigation }) {
 
   const handleSignin = async () => {
     try {
-      const response = await fetch("http://192.168.143.1:3000/users/signin", {
+      const response = await fetch("http://192.168.85.124:3000/users/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -158,20 +158,19 @@ export default function LoginScreen({ navigation }) {
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
+      behavior={Platform.OS === "ios" ? "padding" : "height"}>
       <Video
         source={require("../assets/videoLogin.mp4")}
         rate={1.0}
         volume={1.0}
         isMuted={true}
-        resizeMode="cover"
+        resizeMode='cover'
         shouldPlay
         isLooping
         style={StyleSheet.absoluteFillObject}
       />
       <View style={styles.containerBtn}>
-        <Modal animationType="slide" transparent={true} visible={signUpOpen}>
+        <Modal animationType='slide' transparent={true} visible={signUpOpen}>
           <View style={styles.modalView}>
             <Text style={styles.text}> Inscription</Text>
             <FloatingTextInput
@@ -180,21 +179,21 @@ export default function LoginScreen({ navigation }) {
               // On récupère la valeur onChange de l'input enfant (inverse data flow)
               updateValue={updateValue}
               // On envoie le label en Français (affichage)
-              label="Prénom"
+              label='Prénom'
               // On envoie la clée à modifier
-              name="firstname"
+              name='firstname'
             />
             <FloatingTextInput
               value={formData.lastname}
               updateValue={updateValue}
-              label="Nom"
-              name="lastname"
+              label='Nom'
+              name='lastname'
             />
             <FloatingTextInput
               value={formData.email}
               updateValue={updateValue}
-              label="E-mail"
-              name="email"
+              label='E-mail'
+              name='email'
             />
             {/* <FloatingTextInput
               value={formData.phone}
@@ -205,14 +204,13 @@ export default function LoginScreen({ navigation }) {
             <FloatingTextInput
               value={formData.password}
               updateValue={updateValue}
-              label="Mot de passe"
-              name="password"
+              label='Mot de passe'
+              name='password'
             />
             <View style={styles.containerConnect}>
               <TouchableOpacity
                 style={styles.connect}
-                onPress={handleCloseSignUp}
-              >
+                onPress={handleCloseSignUp}>
                 <Text>Connecter</Text>
               </TouchableOpacity>
             </View>
@@ -227,36 +225,33 @@ export default function LoginScreen({ navigation }) {
           ]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
-          locations={[0.1, 0.5, 1]}
-        >
+          locations={[0.1, 0.5, 1]}>
           <TouchableOpacity
             onPress={() => setSignUpOpen(!signUpOpen)}
-            style={styles.button}
-          >
+            style={styles.button}>
             <Text style={[{ color: "white" }, styles.textInput]}>Sign-up</Text>
           </TouchableOpacity>
-          <Modal animationType="slide" transparent={true} visible={signInOpen}>
+          <Modal animationType='slide' transparent={true} visible={signInOpen}>
             <View style={styles.modalView}>
               <Text style={styles.text}>Connexion</Text>
 
               <FloatingTextInput
                 value={inData.email}
                 updateValue={updateValue}
-                label="E-mail"
-                name="email"
+                label='E-mail'
+                name='email'
               />
               <FloatingTextInput
                 value={inData.password}
                 updateValue={updateValue}
-                label="Mot de passe"
-                name="password"
+                label='Mot de passe'
+                name='password'
               />
 
               <View style={styles.containerConnect}>
                 <TouchableOpacity
                   style={styles.connect}
-                  onPress={handleCloseSignIn}
-                >
+                  onPress={handleCloseSignIn}>
                   <Text style={styles.btnText}>Connecter</Text>
                 </TouchableOpacity>
               </View>
@@ -266,8 +261,7 @@ export default function LoginScreen({ navigation }) {
 
         <TouchableOpacity
           onPress={() => setSignInOpen(!signInOpen)}
-          style={[styles.button, styles.color]}
-        >
+          style={[styles.button, styles.color]}>
           <Text style={styles.textInput}>Sign-in</Text>
         </TouchableOpacity>
       </View>

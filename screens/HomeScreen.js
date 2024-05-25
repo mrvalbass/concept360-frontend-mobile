@@ -22,7 +22,7 @@ export default function HomeScreen({}) {
   useEffect(() => {
     (async () => {
       const userData = await fetch(
-        `http://192.168.143.1:3000/users/token/${user.token}`
+        `http://192.168.85.124:3000/users/token/${user.token}`
       ).then((r) => r.json());
       // console.log("prout", userData);
     })();
@@ -71,7 +71,7 @@ export default function HomeScreen({}) {
       ) : hasPermission === false ? (
         <View>
           <Text>No access to media library</Text>
-          <Button title="Grant Permission" onPress={askForPermission} />
+          <Button title='Grant Permission' onPress={askForPermission} />
         </View>
       ) : (
         <View style={styles.containerProfil}>
@@ -79,7 +79,7 @@ export default function HomeScreen({}) {
             <Image style={styles.imageProfil} source={{ uri: selectedImage }} />
           )}
           <FontAwesome
-            name="pencil-square-o"
+            name='pencil-square-o'
             size={20}
             style={styles.iconProfil}
             onPress={pickImage}
