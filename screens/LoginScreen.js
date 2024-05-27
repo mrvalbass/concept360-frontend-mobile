@@ -8,13 +8,39 @@ import {
 } from "react-native";
 import { Video } from "expo-av";
 import { LinearGradient } from "expo-linear-gradient";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SignUpModal from "../components/SignUpModal";
 import SignInModal from "../components/SignInModal";
+import * as LocalAuthentication from "expo-local-authentication";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useIsFocused } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
+import { login } from "../reducers/user";
 
 export default function LoginScreen({ navigation }) {
+  const dispatch = useDispatch();
   const [signUpOpen, setSignUpOpen] = useState(false);
   const [signInOpen, setSignInOpen] = useState(false);
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      (async () => {
+        const token = await AsyncStorage.getItem("userToken");
+        if (token) {
+          const { success } = await LocalAuthentication.authenticateAsync();
+
+          if (success) {
+            const data = await fetch(
+              `https://concept360-backend-five.vercel.app/users/patients/token/${token}`
+            ).then((r) => r.json());
+            dispatch(login(data.patient.user));
+            navigation.navigate("TabNavigator", { screen: "Home" });
+          }
+        }
+      })();
+    }
+  }, [isFocused]);
 
   return (
     <KeyboardAvoidingView

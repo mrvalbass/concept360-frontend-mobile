@@ -4,7 +4,7 @@ import FlaotingTextInput from "../components/FloatingTextInput";
 export default function AppointementScreen({}) {
   return (
     <View style={styles.container}>
-      <Text>Appointement Screen</Text>
+      <Text>Appointment Screen</Text>
     </View>
   );
 }

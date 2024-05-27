@@ -12,10 +12,7 @@ userSlice = createSlice({
       state.value = action.payload;
     },
     logout: (state) => {
-      state.value.firstname = null;
-      state.value.username = null;
-      state.value.email = null;
-      state.value.token = null;
+      state.value = {};
     },
     addPhoto: (state, action) => {
       state.value.photos.push(action.payload);

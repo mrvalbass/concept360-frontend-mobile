@@ -6,11 +6,10 @@ import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import user from "./reducers/user";
 
-import { StyleSheet, Text, View } from "react-native";
 import LoginScreen from "./screens/LoginScreen";
 import HomeScreen from "./screens/HomeScreen";
 import DocumentScreen from "./screens/DocumentScreen";
-import AppointementScreen from "./screens/AppointementScreen";
+import AppointmentScreen from "./screens/AppointmentScreen";
 import SettingScreen from "./screens/SettingScreen";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
@@ -32,7 +31,7 @@ const TabNavigator = () => {
             iconName = "home";
           } else if (route.name === "Document") {
             iconName = "file";
-          } else if (route.name === "Appointement") {
+          } else if (route.name === "Appointment") {
             iconName = "calendar-check-o";
           } else if (route.name === "Setting") {
             iconName = "gears";
@@ -50,7 +49,7 @@ const TabNavigator = () => {
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Document" component={DocumentScreen} />
-      <Tab.Screen name="Appointement" component={AppointementScreen} />
+      <Tab.Screen name="Appointment" component={AppointmentScreen} />
       <Tab.Screen name="Setting" component={SettingScreen} />
     </Tab.Navigator>
   );

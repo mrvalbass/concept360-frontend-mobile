@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Image } from "react-native";
-import FlaotingTextInput from "../components/floatingTextInput";
+import FlaotingTextInput from "../components/FloatingTextInput";
 
 export default function DocumentScreen({}) {
   return (
