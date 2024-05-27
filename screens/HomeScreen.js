@@ -13,11 +13,7 @@ import * as ImagePicker from "expo-image-picker";
 import { useState, useEffect } from "react";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useSelector } from "react-redux";
-import { setProfilePhoto } from "../actions/authActions";
-import { useFocusEffect } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
-import React, { useCallback } from "react";
+import { addphoto } from "../reducers/user";
 import { useDispatch } from "react-redux";
 
 import ExpandableCalendar from "../components/calendarAgenda";
@@ -25,61 +21,7 @@ import ExpandableCalendar from "../components/calendarAgenda";
 export default function HomeScreen({}) {
   const [hasPermission, setHasPermission] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [profileData, setProfileData] = useState(null);
-  const [picture, setPicture] = useState("./assets/profil.jpg");
-
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  const user = useSelector((state) => state.auth.user);
-
-  //const user = useSelector((state) => state.user.value);
-  console.log("user is", user);
-
-  const dispatch = useDispatch();
-  //console.log("user is", user);
-  // Récuperer données lors de la connexion grâce au token
-  useFocusEffect(
-    React.useCallback(() => {
-      const fetchData = async () => {
-        try {
-          const token = await AsyncStorage.getItem("userToken");
-          console.log("Token ", token);
-          if (token !== null && token) {
-            const response = await axios.get(
-              `http://192.168.143.1:3000/users/token/${token}`,
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
-            let responseData = response.data.patient.user;
-            //console.log("Response is", response.data);
-            setProfileData(responseData);
-            // console.log("profile is", responseData.lastName);
-          } else {
-            console.log("no token found");
-          }
-        } catch (axiosError) {
-          if (axiosError.response) {
-            // La requête a été faite et le serveur a répondu avec un statut différent de 2xx
-            console.error("Erreur de réponse:", axiosError.response.data);
-            console.error("Statut:", axiosError.response.status);
-            console.error("En-têtes:", axiosError.response.headers);
-          } else if (axiosError.request) {
-            // La requête a été faite mais aucune réponse n'a été reçue
-            console.error("Pas de réponse reçue:", axiosError.request);
-          } else {
-            // Une erreur est survenue lors de la configuration de la requête
-            console.error(
-              "Erreur de configuration de la requête:",
-              axiosError.message
-            );
-          }
-        }
-      };
-      fetchData();
-    }, [])
-  );
+  const user = useSelector((state) => state.user.value);
 
   //Récupération de la photo de profil depuis ses images persos et envoi dans coundinary
   useEffect(() => {
@@ -143,7 +85,7 @@ export default function HomeScreen({}) {
       {hasPermission === null ? (
         <Text>Requesting for permission...</Text>
       ) : hasPermission === false ? (
-        <View>
+        <View style={styles.containerProfil}>
           <Text>No access to media library</Text>
           <Button title="Grant Permission" onPress={askForPermission} />
         </View>
@@ -160,7 +102,7 @@ export default function HomeScreen({}) {
           />
           <View style={styles.containerHello}>
             <Text style={styles.hello}>
-              Bonjour {profileData?.firstName} {profileData?.lastName}
+              Bonjour {user.firstName} {user.lastName}
             </Text>
           </View>
           <View style={styles.calendar}>

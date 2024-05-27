@@ -1,10 +1,11 @@
 import React, { useState, useRef } from "react";
 import { Animated, Easing, TextInput, StyleSheet } from "react-native";
 
-const FlaotingTextInput = ({
+const FloatingTextInput = ({
   value,
   name,
   updateValue,
+  secureTextEntry,
   label = "New Title",
   titleActiveSize = 12,
   titleInActiveSize = 14,
@@ -73,6 +74,7 @@ const FlaotingTextInput = ({
         style={styles.textStyle}
         onBlur={onBlur}
         onFocus={onFocus}
+        secureTextEntry={secureTextEntry}
       />
     </Animated.View>
   );
@@ -97,4 +99,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FlaotingTextInput;
+export default FloatingTextInput;
