@@ -13,14 +13,13 @@ import * as ImagePicker from "expo-image-picker";
 import { useState, useEffect } from "react";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useSelector } from "react-redux";
-import { addphoto } from "../reducers/user";
+import { addPhoto } from "../reducers/user";
 import { useDispatch } from "react-redux";
-
-import ExpandableCalendar from "../components/calendarAgenda";
+import CalendarInline from "../components/CalendarAgenda";
 
 export default function HomeScreen({}) {
+  const dispatch = useDispatch();
   const [hasPermission, setHasPermission] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(null);
   const user = useSelector((state) => state.user.value);
 
   //Récupération de la photo de profil depuis ses images persos et envoi dans coundinary
@@ -45,32 +44,35 @@ export default function HomeScreen({}) {
         quality: 1,
       });
 
-      //console.log("result", result);
+      console.log("result", result);
       if (!result.canceled) {
-        setSelectedImage(result.assets[0].uri);
+        dispatch(addPhoto(result.assets[0].uri));
       }
       const formData = new FormData();
       const uri = result.assets[0]?.uri;
       console.log("uri is", result.assets[0].uri);
-      formData.append("photoFromFront", {
-        uri: uri,
-        name: "photo.jpg",
-        type: "image/jpeg",
-      });
-
-      fetch("http://192.168.143.1:3000/users/upload", {
-        method: "POST",
-        body: formData,
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data.url);
-          data.result && dispatch(setProfilePhoto(data.url));
+      if (uri) {
+        formData.append("photoFromFront", {
+          uri: uri,
+          name: "photo.jpg",
+          type: "image/jpeg",
         });
+        formData.append("token", user.token);
+      }
+
+      console.log("form is", formData);
+      const data = await fetch(
+        // "http://192.168.143.1:3000/users/upload",
+        "https://concept360-backend-five.vercel.app/users/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      ).then((response) => response.json());
+      console.log("CLOUDINARY", data);
+      data.result && dispatch(addPhoto(data.url));
     }
   };
-
-  //Création du calendrier inline
 
   return (
     <SafeAreaView style={styles.container}>
@@ -91,8 +93,11 @@ export default function HomeScreen({}) {
         </View>
       ) : (
         <View style={styles.containerProfil}>
-          {selectedImage && (
-            <Image style={styles.imageProfil} source={{ uri: selectedImage }} />
+          {user.profilePictureURL && (
+            <Image
+              style={styles.imageProfil}
+              source={{ uri: user.profilePictureURL }}
+            />
           )}
           <FontAwesome
             name="pencil-square-o"
@@ -107,7 +112,7 @@ export default function HomeScreen({}) {
           </View>
           <View style={styles.calendar}>
             <ScrollView>
-              <ExpandableCalendar />
+              <CalendarInline />
             </ScrollView>
           </View>
         </View>

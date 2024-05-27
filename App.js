@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { Provider } from "react-redux";
-import store from "./store/configureStore";
+import { configureStore } from "@reduxjs/toolkit";
 import user from "./reducers/user";
 
 import LoginScreen from "./screens/LoginScreen";
@@ -15,6 +15,9 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+const store = configureStore({
+  reducer: { user },
+});
 
 const TabNavigator = () => {
   return (

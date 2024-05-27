@@ -11,20 +11,26 @@ import {
 import moment, { months } from "moment";
 import "moment/locale/fr";
 import Swiper from "react-native-swiper";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import CalendarModal from "./CalendarModal";
 
 const { width } = Dimensions.get("screen");
 
-export default function Example() {
+export default function CalendarInline() {
   const swiper = useRef();
   const [value, setValue] = useState(new Date());
   const [week, setWeek] = useState(0);
+  const [showModal, setShowModal] = useState(false);
 
   // Configuration de Moment.js pour utiliser le français
   moment.locale("fr");
 
+  const closeModal = () => {
+    setShowModal(false);
+  };
   const weeks = React.useMemo(() => {
     const start = moment().add(week, "weeks").startOf("week");
-    console.log(start);
+
     return [-1, 0, 1].map((adj) => {
       return Array.from({ length: 7 }).map((_, index) => {
         const date = moment(start).add(adj, "week").add(index, "day");
@@ -37,8 +43,6 @@ export default function Example() {
       });
     });
   }, [week]);
-  console.log("date is", week);
-  //console.log("WK is", weekday);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -112,21 +116,21 @@ export default function Example() {
             ))}
           </Swiper>
         </View>
-
-        {/* CONTAINER POUR FAIRE APPARAITRE LES EXERCICES*/}
-        {/* <View style={styles.titleContainer}>
-          <Text style={styles.title}>Activitée du jour</Text>
+        <View style={{ paddingLeft: 20 }}>
+          <TouchableOpacity>
+            <FontAwesome
+              name="caret-down"
+              color={"white"}
+              size={20}
+              onPress={() => setShowModal(true)}
+            />
+          </TouchableOpacity>
         </View>
-         <View style={{ flex: 1, paddingHorizontal: 16, paddingVertical: 24 }}>
-          <Text style={styles.subtitle}> {moment(value).format("LL")}</Text>
-          <View style={styles.placeholder}>
-            <View style={styles.placeholderInset}>
-              {/* EMPLACEMENT DES EXERCICES */}
-        {/* </View>
-          </View> */}
-        {/* </View> */}
-
-        <View style={styles.footer}></View>
+        <View>
+          {showModal && (
+            <CalendarModal setShowModal={closeModal} showModal={showModal} />
+          )}
+        </View>
       </View>
     </SafeAreaView>
   );

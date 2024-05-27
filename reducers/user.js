@@ -15,7 +15,7 @@ const userSlice = createSlice({
       state.value = {};
     },
     addPhoto: (state, action) => {
-      state.photos.push(action.payload);
+      state.value.profilePictureURL = action.payload;
     },
   },
 });
