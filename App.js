@@ -3,20 +3,16 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { Provider } from "react-redux";
-import { configureStore } from "@reduxjs/toolkit";
+import store from "./store/configureStore";
 import user from "./reducers/user";
 
-import { StyleSheet, Text, View } from "react-native";
+//mport { StyleSheet, Text, View } from "react-native";
 import LoginScreen from "./screens/LoginScreen";
 import HomeScreen from "./screens/HomeScreen";
 import DocumentScreen from "./screens/DocumentScreen";
 import AppointementScreen from "./screens/AppointementScreen";
 import SettingScreen from "./screens/SettingScreen";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-
-const store = configureStore({
-  reducer: { user },
-});
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();

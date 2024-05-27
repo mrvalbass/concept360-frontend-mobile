@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import { login } from "../reducers/user";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { loginSuccess, logout } from "../actions/authActions";
 
 export default function LoginScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -40,6 +41,7 @@ export default function LoginScreen({ navigation }) {
       ...prevState,
       [name]: value,
     }));
+
     setInData((prevState) => ({
       ...prevState,
       [name]: value,
@@ -47,36 +49,52 @@ export default function LoginScreen({ navigation }) {
   };
 
   // Inscription uniquement patient et envoie des informations à la base de données
-  const handleSignUp = () => {
-    fetch("http://192.168.143.1:3000/users/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        firstName: formData.firstname,
-        lastName: formData.lastname,
-        email: formData.email,
-        password: formData.password,
-        state: "patient",
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        dispatch(
-          login({
-            firstname: formData.firstname,
-            lastname: formData.lastname,
-            email: formData.email,
-            token: data.token,
-          })
-        );
+  const handleSignUp = async () => {
+    try {
+      const response = await axios.post(
+        "http://192.168.143.1:3000/users/signup",
+        {
+          firstName: formData.firstname,
+          lastName: formData.lastname,
+          email: formData.email,
+          password: formData.password,
+          state: "patient",
+        }
+      );
+
+      const data = await response.data;
+      console.log("Data is", data);
+      console.log("Response is", response.data);
+
+      if (response.status === 200 && data.token) {
+        await AsyncStorage.setItem("userToken", data.token);
+        setToken(response.data.token);
+
+        console.log("Token is", response.data.token);
+
+        // dispatch(
+        //   login({
+        //     firstname: formData.firstname,
+        //     lastname: formData.lastname,
+        //     email: formData.email,
+        //     token: data.token,
+        //   })
+        // );
+
+        dispatch(loginSuccess(formData));
+
         setFormData({
           firstname: "",
           lastname: "",
           email: "",
           password: "",
         });
+
         navigation.navigate("TabNavigator", { screen: "Home" });
-      });
+      }
+    } catch (err) {
+      Alert.alert("Erreur", "Une erreur s'est produite. Veuillez réessayer.");
+    }
   };
 
   //Connexion et récupération du token pour avoir accès aux infos du client
@@ -90,20 +108,23 @@ export default function LoginScreen({ navigation }) {
         }
       );
       const data = await response.data;
-      //console.log("response is", response);
-      //console.log("data is", data);
-      //console.log("dataToken", data.token);
+
+      console.log("data is", data);
+      console.log("dataToken", data.token);
       if (response.status === 200 && data.token) {
         await AsyncStorage.setItem("userToken", data.token);
         setToken(response.data.token);
+        console.log("setTokent ", token);
 
-        dispatch(
-          login({
-            email: inData.email,
-            password: inData.password,
-            token: data.token,
-          })
-        );
+        // dispatch(
+        //   login({
+        //     email: inData.email,
+        //     password: inData.password,
+        //     token: data.token,
+        //   })
+        // );
+
+        dispatch(loginSuccess(inData));
 
         setInData({
           email: "",

@@ -10,7 +10,7 @@ const initialState = {
   },
 };
 
-userSlice = createSlice({
+const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
@@ -22,15 +22,15 @@ userSlice = createSlice({
     },
     logout: (state) => {
       state.value.firstname = null;
-      state.value.username = null;
+      state.value.lastname = null;
       state.value.email = null;
       state.value.token = null;
     },
     addPhoto: (state, action) => {
-      state.value.photos.push(action.payload);
+      state.photos.push(action.payload);
     },
   },
 });
 
-export const { login, logout } = userSlice.actions;
+export const { login, logout, addPhoto } = userSlice.actions;
 export default userSlice.reducer;

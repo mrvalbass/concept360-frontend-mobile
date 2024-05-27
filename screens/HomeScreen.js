@@ -5,6 +5,7 @@ import {
   Image,
   Button,
   SafeAreaView,
+  ScrollView,
 } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
@@ -12,31 +13,39 @@ import * as ImagePicker from "expo-image-picker";
 import { useState, useEffect } from "react";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useSelector } from "react-redux";
-import { addphoto } from "../reducers/user";
+import { setProfilePhoto } from "../actions/authActions";
 import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
+import ExpandableCalendar from "../components/calendarAgenda";
+
 export default function HomeScreen({}) {
   const [hasPermission, setHasPermission] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [profileData, setProfileData] = useState(null);
-  const user = useSelector((state) => state.user.value);
+  const [picture, setPicture] = useState("./assets/profil.jpg");
+
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const user = useSelector((state) => state.auth.user);
+
+  //const user = useSelector((state) => state.user.value);
+  console.log("user is", user);
 
   const dispatch = useDispatch();
-
+  //console.log("user is", user);
   // Récuperer données lors de la connexion grâce au token
   useFocusEffect(
     React.useCallback(() => {
       const fetchData = async () => {
         try {
           const token = await AsyncStorage.getItem("userToken");
-          console.log("Token is", token);
-          if (token !== null) {
+          console.log("Token ", token);
+          if (token !== null && token) {
             const response = await axios.get(
-              `http://192.168.143.1:3000/users/token/${user.token}`,
+              `http://192.168.143.1:3000/users/token/${token}`,
               {
                 headers: {
                   Authorization: `Bearer ${token}`,
@@ -44,9 +53,9 @@ export default function HomeScreen({}) {
               }
             );
             let responseData = response.data.patient.user;
-            //console.log("Response is", responseData);
+            //console.log("Response is", response.data);
             setProfileData(responseData);
-            // console.log("profile is", response.data);
+            // console.log("profile is", responseData.lastName);
           } else {
             console.log("no token found");
           }
@@ -72,7 +81,7 @@ export default function HomeScreen({}) {
     }, [])
   );
 
-  // Récupération de la photo de profil depuis ses images persos et envoi dans coundinary
+  //Récupération de la photo de profil depuis ses images persos et envoi dans coundinary
   useEffect(() => {
     (async () => {
       const { status } = await ImagePicker.getMediaLibraryPermissionsAsync();
@@ -113,10 +122,13 @@ export default function HomeScreen({}) {
       })
         .then((response) => response.json())
         .then((data) => {
-          data.result && dispatch(addphoto(data.url));
+          console.log(data.url);
+          data.result && dispatch(setProfilePhoto(data.url));
         });
     }
   };
+
+  //Création du calendrier inline
 
   return (
     <SafeAreaView style={styles.container}>
@@ -150,6 +162,11 @@ export default function HomeScreen({}) {
             <Text style={styles.hello}>
               Bonjour {profileData?.firstName} {profileData?.lastName}
             </Text>
+          </View>
+          <View style={styles.calendar}>
+            <ScrollView>
+              <ExpandableCalendar />
+            </ScrollView>
           </View>
         </View>
       )}
@@ -188,5 +205,10 @@ const styles = StyleSheet.create({
   },
   hello: {
     fontSize: 25,
+  },
+  calendar: {
+    //backgroundColor: "pink",
+    width: "100%",
+    height: "95%",
   },
 });
