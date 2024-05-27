@@ -13,64 +13,13 @@ import { useState, useEffect } from "react";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useSelector } from "react-redux";
 import { addphoto } from "../reducers/user";
-import { useFocusEffect } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
-import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
-export default function HomeScreen({}) {
+export default function HomeScreen({ navigation }) {
+  const dispatch = useDispatch();
   const [hasPermission, setHasPermission] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [profileData, setProfileData] = useState(null);
   const user = useSelector((state) => state.user.value);
-
-  const dispatch = useDispatch();
-
-  // Récuperer données lors de la connexion grâce au token
-  useFocusEffect(
-    React.useCallback(() => {
-      const fetchData = async () => {
-        try {
-          const token = await AsyncStorage.getItem("userToken");
-          console.log("Token is", token);
-          if (token !== null) {
-            const response = await axios.get(
-              `http://192.168.143.1:3000/users/token/${user.token}`,
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
-            let responseData = response.data.patient.user;
-            //console.log("Response is", responseData);
-            setProfileData(responseData);
-            // console.log("profile is", response.data);
-          } else {
-            console.log("no token found");
-          }
-        } catch (axiosError) {
-          if (axiosError.response) {
-            // La requête a été faite et le serveur a répondu avec un statut différent de 2xx
-            console.error("Erreur de réponse:", axiosError.response.data);
-            console.error("Statut:", axiosError.response.status);
-            console.error("En-têtes:", axiosError.response.headers);
-          } else if (axiosError.request) {
-            // La requête a été faite mais aucune réponse n'a été reçue
-            console.error("Pas de réponse reçue:", axiosError.request);
-          } else {
-            // Une erreur est survenue lors de la configuration de la requête
-            console.error(
-              "Erreur de configuration de la requête:",
-              axiosError.message
-            );
-          }
-        }
-      };
-      fetchData();
-    }, [])
-  );
 
   // Récupération de la photo de profil depuis ses images persos et envoi dans coundinary
   useEffect(() => {
@@ -131,7 +80,7 @@ export default function HomeScreen({}) {
       {hasPermission === null ? (
         <Text>Requesting for permission...</Text>
       ) : hasPermission === false ? (
-        <View>
+        <View style={styles.containerProfil}>
           <Text>No access to media library</Text>
           <Button title='Grant Permission' onPress={askForPermission} />
         </View>
@@ -148,7 +97,7 @@ export default function HomeScreen({}) {
           />
           <View style={styles.containerHello}>
             <Text style={styles.hello}>
-              Bonjour {profileData?.firstName} {profileData?.lastName}
+              Bonjour {user.firstName} {user.lastName}
             </Text>
           </View>
         </View>
