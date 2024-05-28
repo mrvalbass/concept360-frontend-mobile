@@ -15,7 +15,7 @@ import * as LocalAuthentication from "expo-local-authentication";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
-import { login } from "../reducers/user";
+import { login, addPhoto } from "../reducers/user";
 
 export default function LoginScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -35,10 +35,14 @@ export default function LoginScreen({ navigation }) {
             const data = await fetch(
               `https://concept360-backend-five.vercel.app/users/patients/token/${token}`
             ).then((r) => r.json());
-            console.log("data is", data);
+            //console.log("data is", data);
             dispatch(login(data.patient.user));
-            dispatch(addPhoto(data.patient.profilePictureURL));
+            dispatch(addPhoto(data.patient.user.profilePictureURL));
             navigation.navigate("TabNavigator", { screen: "Home" });
+            // console.log(
+            //   "profilPiCTURE is",
+            //   data.patient.user.profilePictureURL
+            // );
           }
         }
       })();

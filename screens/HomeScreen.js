@@ -43,14 +43,13 @@ export default function HomeScreen({}) {
         aspect: [4, 3],
         quality: 1,
       });
-
-      console.log("result", result);
+      //console.log("result is", result);
       if (!result.canceled) {
         dispatch(addPhoto(result.assets[0].uri));
       }
       const formData = new FormData();
       const uri = result.assets[0]?.uri;
-      console.log("uri is", result.assets[0].uri);
+      //console.log("uri is", result.assets[0].uri);
       if (uri) {
         formData.append("photoFromFront", {
           uri: uri,
