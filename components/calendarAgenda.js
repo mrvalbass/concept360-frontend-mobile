@@ -74,8 +74,7 @@ export default function CalendarInline({ navigation }) {
                 setValue(moment(value).add(newIndex, "week").toDate());
                 swiper.current.scrollTo(1, false);
               }, 100);
-            }}
-          >
+            }}>
             {weeks.map((dates, index) => (
               <View style={styles.itemRow} key={index}>
                 {dates.map((item, dateIndex) => {
@@ -84,8 +83,7 @@ export default function CalendarInline({ navigation }) {
                   return (
                     <TouchableWithoutFeedback
                       key={dateIndex}
-                      onPress={() => setValue(item.date)}
-                    >
+                      onPress={() => setValue(item.date)}>
                       <View
                         style={[
                           styles.item,
@@ -95,14 +93,12 @@ export default function CalendarInline({ navigation }) {
                             borderWidth: 1,
                             borderRadius: 25,
                           },
-                        ]}
-                      >
+                        ]}>
                         <Text
                           style={[
                             styles.itemWeekday,
                             isActive && { color: "#fff" },
-                          ]}
-                        >
+                          ]}>
                           {item.weekday}
                         </Text>
                         <Text
@@ -111,8 +107,7 @@ export default function CalendarInline({ navigation }) {
                             isActive && {
                               color: "#fff",
                             },
-                          ]}
-                        >
+                          ]}>
                           {item.date.getDate()}
                         </Text>
                       </View>
@@ -126,7 +121,7 @@ export default function CalendarInline({ navigation }) {
         <View style={{ paddingLeft: 20 }}>
           <TouchableOpacity>
             <FontAwesome
-              name="caret-down"
+              name='caret-down'
               color={"white"}
               size={20}
               onPress={() => setShowModal(true)}
