@@ -6,7 +6,6 @@ import {
   Button,
   SafeAreaView,
 } from "react-native";
-
 import { LinearGradient } from "expo-linear-gradient";
 import * as ImagePicker from "expo-image-picker";
 import { useState, useEffect } from "react";
@@ -14,8 +13,9 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useSelector } from "react-redux";
 import { addphoto } from "../reducers/user";
 import { useDispatch } from "react-redux";
+import ProgramCard from "../components/ProgramCard";
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen({ _id }) {
   const dispatch = useDispatch();
   const [hasPermission, setHasPermission] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -43,7 +43,6 @@ export default function HomeScreen({ navigation }) {
         quality: 1,
       });
 
-      //console.log("result", result);
       if (!result.canceled) {
         setSelectedImage(result.assets[0].uri);
       }
@@ -56,7 +55,7 @@ export default function HomeScreen({ navigation }) {
         type: "image/jpeg",
       });
 
-      fetch("http://192.168.143.1:3000/users/upload", {
+      fetch("https://concept360-backend-five.vercel.app/users/upload", {
         method: "POST",
         body: formData,
       })
@@ -93,13 +92,14 @@ export default function HomeScreen({ navigation }) {
             name='pencil-square-o'
             size={20}
             style={styles.iconProfil}
+            color='white'
             onPress={pickImage}
           />
           <View style={styles.containerHello}>
-            <Text style={styles.hello}>
-              Bonjour {user.firstName} {user.lastName}
-            </Text>
+            <Text style={styles.hello}>Bonjour {user.firstName}</Text>
           </View>
+          <Text style={styles.title}>Activité du jour</Text>
+          <ProgramCard />
         </View>
       )}
     </SafeAreaView>
@@ -136,6 +136,13 @@ const styles = StyleSheet.create({
     alignItems: "",
   },
   hello: {
+    color: "white",
     fontSize: 25,
+  },
+  title: {
+    fontWeight: "bold",
+    fontSize: 20,
+    color: "white",
+    marginBottom: 5,
   },
 });
