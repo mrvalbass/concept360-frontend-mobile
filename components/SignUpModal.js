@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { login } from "../reducers/user";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export default function SignUpModal({ navigation, signUpOpen, setSignUpOpen }) {
   const dispatch = useDispatch();
@@ -73,6 +74,12 @@ export default function SignUpModal({ navigation, signUpOpen, setSignUpOpen }) {
     <Modal animationType="slide" transparent={true} visible={signUpOpen}>
       <View style={styles.modalView}>
         <Text style={styles.text}> Inscription</Text>
+        <FontAwesome
+          name="times"
+          size={20}
+          style={{ color: "black", paddingLeft: 220 }}
+          onPress={() => setSignUpOpen(false)}
+        />
         <FloatingTextInput
           value={formData.firstName}
           updateValue={updateValue}
@@ -118,6 +125,10 @@ const styles = StyleSheet.create({
     elevation: 5,
     gap: 25,
   },
+  containerConnect: {
+    borderWidth: 1,
+    borderColor: "red",
+  },
 
   connect: {
     borderRadius: 5,
@@ -133,5 +144,6 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: 20,
     fontWeight: "700",
+    textAlign: "center",
   },
 });

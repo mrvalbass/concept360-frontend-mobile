@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   StyleSheet,
   Dimensions,
@@ -8,7 +8,7 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
-import moment, { months } from "moment";
+import moment from "moment";
 import "moment/locale/fr";
 import Swiper from "react-native-swiper";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -16,11 +16,13 @@ import CalendarModal from "./CalendarModal";
 
 const { width } = Dimensions.get("screen");
 
-export default function CalendarInline() {
+export default function CalendarInline({ navigation }) {
   const swiper = useRef();
   const [value, setValue] = useState(new Date());
   const [week, setWeek] = useState(0);
   const [showModal, setShowModal] = useState(false);
+
+  console.log("value", value.toISOString().slice(0, 10));
 
   // Configuration de Moment.js pour utiliser le français
   moment.locale("fr");
@@ -28,9 +30,12 @@ export default function CalendarInline() {
   const closeModal = () => {
     setShowModal(false);
   };
-  const weeks = React.useMemo(() => {
-    const start = moment().add(week, "weeks").startOf("week");
 
+  const weeks = React.useMemo(() => {
+    const start = moment(value, "YYYY-MM-DD")
+      .add(week, "weeks")
+      .startOf("week");
+    console.log("start", start);
     return [-1, 0, 1].map((adj) => {
       return Array.from({ length: 7 }).map((_, index) => {
         const date = moment(start).add(adj, "week").add(index, "day");
@@ -42,7 +47,9 @@ export default function CalendarInline() {
         };
       });
     });
-  }, [week]);
+  }, [week, value]);
+
+  console.log("week", weeks[1][0]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -123,7 +130,12 @@ export default function CalendarInline() {
         </View>
         <View>
           {showModal && (
-            <CalendarModal setShowModal={closeModal} showModal={showModal} />
+            <CalendarModal
+              setShowModal={closeModal}
+              showModal={showModal}
+              setValue={setValue}
+              value={value}
+            />
           )}
         </View>
       </View>

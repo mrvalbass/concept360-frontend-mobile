@@ -17,7 +17,7 @@ import { useDispatch } from "react-redux";
 import CalendarInline from "../components/calendarAgenda";
 import ProgramCard from "../components/ProgramCard";
 
-export default function HomeScreen({ _id }) {
+export default function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
   const [hasPermission, setHasPermission] = useState(null);
   const user = useSelector((state) => state.user.value);
