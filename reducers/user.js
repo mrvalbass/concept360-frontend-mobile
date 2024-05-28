@@ -4,7 +4,7 @@ const initialState = {
   value: {},
 };
 
-userSlice = createSlice({
+const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
@@ -15,10 +15,10 @@ userSlice = createSlice({
       state.value = {};
     },
     addPhoto: (state, action) => {
-      state.value.photos.push(action.payload);
+      state.value.profilePictureURL = action.payload;
     },
   },
 });
 
-export const { login, logout } = userSlice.actions;
+export const { login, logout, addPhoto } = userSlice.actions;
 export default userSlice.reducer;
