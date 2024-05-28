@@ -6,7 +6,6 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export default function ProgramCard({ _id }) {
   const user = useSelector((state) => state.user.value);
-
   const [programs, setPrograms] = useState([]);
 
   useEffect(() => {
@@ -19,7 +18,7 @@ export default function ProgramCard({ _id }) {
       // console.log("programs", programs.program[0].routine.exercises);
     })();
   }, []);
-  console.log("programs", programs.notes);
+  // console.log("programs", programs.notes);
 
   // const programComponents =
   //   programs &&

@@ -14,7 +14,8 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useSelector } from "react-redux";
 import { addPhoto } from "../reducers/user";
 import { useDispatch } from "react-redux";
-import CalendarInline from "../components/CalendarAgenda";
+import CalendarInline from "../components/calendarAgenda";
+import ProgramCard from "../components/ProgramCard";
 
 export default function HomeScreen({ _id }) {
   const dispatch = useDispatch();
