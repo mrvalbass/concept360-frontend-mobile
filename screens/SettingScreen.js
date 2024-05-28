@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Pressable, SafeAreaView } from "react-native";
+import { Text, StyleSheet, Pressable, SafeAreaView } from "react-native";
 import { useDispatch } from "react-redux";
 import { logout } from "../reducers/user";
 import AsyncStorage from "@react-native-async-storage/async-storage";

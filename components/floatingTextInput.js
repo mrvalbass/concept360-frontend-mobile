@@ -1,7 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import { Animated, Easing, TextInput, StyleSheet } from "react-native";
 
-const FloatingTextInput = ({
+export default function FloatingTextInput({
   value,
   name,
   updateValue,
@@ -11,7 +11,7 @@ const FloatingTextInput = ({
   titleInActiveSize = 14,
   titleActiveColor = "#02FAFA",
   titleInactiveColor = "#c2c2c2",
-}) => {
+}) {
   const animatedValue = useRef(new Animated.Value(0));
 
   const returnAnimatedTitleStyles = {
@@ -34,8 +34,7 @@ const FloatingTextInput = ({
       outputRange: [titleInactiveColor, titleActiveColor],
     }),
     alignSelf: "flex-start",
-    paddingLeft: 6,
-    paddingRight: 6,
+    paddingHorizontal: 6,
     backgroundColor: "white",
   };
 
@@ -78,25 +77,19 @@ const FloatingTextInput = ({
       />
     </Animated.View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   subContainer: {
-    marginHorizontal: 24,
     borderWidth: 2,
-    width: 200,
+    width: "100%",
     borderColor: "#c2c2c2",
     borderRadius: 5,
     height: 50,
-    paddingLeft: 10,
-    paddingRight: 6,
-    backgroundColor: "#ffffff",
+    paddingHorizontal: 10,
   },
   textStyle: {
     paddingBottom: 28,
-    // backgroundColor: "red",
     fontSize: 16,
   },
 });
-
-export default FloatingTextInput;

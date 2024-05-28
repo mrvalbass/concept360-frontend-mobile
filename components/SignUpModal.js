@@ -1,17 +1,14 @@
-import {
-  TouchableOpacity,
-  Text,
-  View,
-  Modal,
-  StyleSheet,
-  Alert,
-} from "react-native";
-import FloatingTextInput from "./FloatingTextInput";
-import { useDispatch } from "react-redux";
+import { Pressable, Text, View, Modal, StyleSheet, Alert } from "react-native";
+
 import { useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import { useDispatch } from "react-redux";
 import { login } from "../reducers/user";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+
+import FloatingTextInput from "./FloatingTextInput";
 
 export default function SignUpModal({ navigation, signUpOpen, setSignUpOpen }) {
   const dispatch = useDispatch();
@@ -38,7 +35,7 @@ export default function SignUpModal({ navigation, signUpOpen, setSignUpOpen }) {
       const data = await fetch(
         "https://concept360-backend-five.vercel.app/users/signup",
         options
-      ).then((res) => res.json());
+      ).then((r) => r.json());
       if (data.result) {
         await AsyncStorage.setItem("userToken", data.newUser.token);
         dispatch(login(data.newUser));
@@ -71,15 +68,20 @@ export default function SignUpModal({ navigation, signUpOpen, setSignUpOpen }) {
   };
 
   return (
-    <Modal animationType="slide" transparent={true} visible={signUpOpen}>
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={signUpOpen}
+      onRequestClose={() => setSignUpOpen(false)}
+    >
       <View style={styles.modalView}>
-        <Text style={styles.text}> Inscription</Text>
         <FontAwesome
           name="times"
-          size={20}
-          style={{ color: "black", paddingLeft: 220 }}
+          size={30}
+          style={styles.icon}
           onPress={() => setSignUpOpen(false)}
         />
+        <Text style={styles.text}> Inscription</Text>
         <FloatingTextInput
           value={formData.firstName}
           updateValue={updateValue}
@@ -105,11 +107,9 @@ export default function SignUpModal({ navigation, signUpOpen, setSignUpOpen }) {
           name="password"
           secureTextEntry
         />
-        <View style={styles.containerConnect}>
-          <TouchableOpacity style={styles.connect} onPress={handleCloseSignUp}>
-            <Text>Connecter</Text>
-          </TouchableOpacity>
-        </View>
+        <Pressable style={styles.connect} onPress={handleCloseSignUp}>
+          <Text style={styles.btnText}>Connecter</Text>
+        </Pressable>
       </View>
     </Modal>
   );
@@ -118,32 +118,39 @@ export default function SignUpModal({ navigation, signUpOpen, setSignUpOpen }) {
 const styles = StyleSheet.create({
   modalView: {
     margin: 40,
-    backgroundColor: "white",
+    marginTop: "30%",
+    backgroundColor: "#ffffff",
     borderRadius: 5,
-    padding: 35,
+    paddingVertical: 30,
+    paddingHorizontal: 50,
     alignItems: "center",
-    elevation: 5,
     gap: 25,
   },
-  containerConnect: {
-    borderWidth: 1,
-    borderColor: "red",
-  },
 
-  connect: {
-    borderRadius: 5,
-    height: 39,
-    paddingRight: 20,
-    paddingBottom: 20,
-    width: 100,
-    borderWidth: 1.5,
-    borderColor: "#c2c2c2",
+  icon: {
+    position: "absolute",
+    color: "black",
+    top: 8,
+    right: 10,
   },
 
   text: {
     color: "black",
     fontSize: 20,
     fontWeight: "700",
-    textAlign: "center",
+  },
+
+  connect: {
+    borderRadius: 5,
+    paddingHorizontal: 35,
+    paddingVertical: 10,
+    borderWidth: 1.5,
+    borderColor: "#c2c2c2",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  btnText: {
+    fontSize: 18,
   },
 });
