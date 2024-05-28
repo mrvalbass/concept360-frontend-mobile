@@ -3,29 +3,25 @@ import { View, StyleSheet, TouchableOpacity, Text, Modal } from "react-native";
 import { Calendar } from "react-native-calendars";
 
 export default function CalendarModal({ showModal, setShowModal }) {
-  console.log(showModal);
   return (
     <Modal
-      animationType="slide"
+      animationType='slide'
       transparent={true}
       visible={showModal}
-      onRequestClose={() => setShowModal(false)}
-    >
+      onRequestClose={() => setShowModal(false)}>
       <View
         style={{
           flex: 1,
           alignItems: "center",
           justifyContent: "center",
           backgroundColor: "rgba(0,0,0,0.5)",
-        }}
-      >
+        }}>
         <View style={styles.modalView}>
           <Calendar />
         </View>
         <TouchableOpacity
           style={styles.closeButton}
-          onPress={() => setShowModal(false)}
-        >
+          onPress={() => setShowModal(false)}>
           <Text style={styles.closeButtonText}>Close</Text>
         </TouchableOpacity>
       </View>

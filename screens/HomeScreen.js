@@ -7,7 +7,6 @@ import {
   SafeAreaView,
   ScrollView,
 } from "react-native";
-
 import { LinearGradient } from "expo-linear-gradient";
 import * as ImagePicker from "expo-image-picker";
 import { useState, useEffect } from "react";
@@ -15,9 +14,10 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useSelector } from "react-redux";
 import { addPhoto } from "../reducers/user";
 import { useDispatch } from "react-redux";
-import CalendarInline from "../components/CalendarAgenda";
+import CalendarInline from "../components/calendarAgenda";
+import ProgramCard from "../components/ProgramCard";
 
-export default function HomeScreen({}) {
+export default function HomeScreen({ _id }) {
   const dispatch = useDispatch();
   const [hasPermission, setHasPermission] = useState(null);
   const user = useSelector((state) => state.user.value);
@@ -43,7 +43,7 @@ export default function HomeScreen({}) {
         aspect: [4, 3],
         quality: 1,
       });
-      //console.log("result is", result);
+
       if (!result.canceled) {
         dispatch(addPhoto(result.assets[0].uri));
       }
@@ -88,7 +88,7 @@ export default function HomeScreen({}) {
       ) : hasPermission === false ? (
         <View style={styles.containerProfil}>
           <Text>No access to media library</Text>
-          <Button title="Grant Permission" onPress={askForPermission} />
+          <Button title='Grant Permission' onPress={askForPermission} />
         </View>
       ) : (
         <View style={styles.containerProfil}>
@@ -99,21 +99,22 @@ export default function HomeScreen({}) {
             />
           )}
           <FontAwesome
-            name="pencil-square-o"
+            name='pencil-square-o'
             size={20}
             style={styles.iconProfil}
+            color='white'
             onPress={pickImage}
           />
           <View style={styles.containerHello}>
-            <Text style={styles.hello}>
-              Bonjour {user.firstName} {user.lastName}
-            </Text>
+            <Text style={styles.hello}>Bonjour {user.firstName}</Text>
           </View>
           <View style={styles.calendar}>
             <ScrollView>
               <CalendarInline />
             </ScrollView>
           </View>
+          <Text style={styles.title}>Activité du jour</Text>
+          <ProgramCard />
         </View>
       )}
     </SafeAreaView>
@@ -150,11 +151,13 @@ const styles = StyleSheet.create({
     alignItems: "",
   },
   hello: {
+    color: "white",
     fontSize: 25,
   },
-  calendar: {
-    //backgroundColor: "pink",
-    width: "100%",
-    height: "95%",
+  title: {
+    fontWeight: "bold",
+    fontSize: 20,
+    color: "white",
+    marginBottom: 5,
   },
 });

@@ -52,14 +52,13 @@ export default function LoginScreen({ navigation }) {
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
+      behavior={Platform.OS === "ios" ? "padding" : "height"}>
       <Video
         source={require("../assets/videoLogin.mp4")}
         rate={1.0}
         volume={1.0}
         isMuted={true}
-        resizeMode="cover"
+        resizeMode='cover'
         shouldPlay
         isLooping
         style={StyleSheet.absoluteFillObject}
@@ -85,20 +84,17 @@ export default function LoginScreen({ navigation }) {
           ]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
-          locations={[0.1, 0.5, 1]}
-        >
+          locations={[0.1, 0.5, 1]}>
           <TouchableOpacity
             onPress={() => setSignUpOpen(true)}
-            style={styles.button}
-          >
+            style={styles.button}>
             <Text style={[{ color: "white" }, styles.textInput]}>Sign-up</Text>
           </TouchableOpacity>
         </LinearGradient>
 
         <TouchableOpacity
           onPress={() => setSignInOpen(true)}
-          style={[styles.button, styles.color]}
-        >
+          style={[styles.button, styles.color]}>
           <Text style={styles.textInput}>Sign-in</Text>
         </TouchableOpacity>
       </View>
