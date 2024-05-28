@@ -1,9 +1,18 @@
 import React, { useState } from "react";
 import { View, StyleSheet, TouchableOpacity, Text, Modal } from "react-native";
 import { Calendar } from "react-native-calendars";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-export default function CalendarModal({ showModal, setShowModal }) {
-  console.log(showModal);
+const Stack = createNativeStackNavigator();
+
+export default function CalendarModal({
+  showModal,
+  setShowModal,
+  setValue,
+  value,
+  navigateToSlide,
+}) {
   return (
     <Modal
       animationType="slide"
@@ -20,14 +29,16 @@ export default function CalendarModal({ showModal, setShowModal }) {
         }}
       >
         <View style={styles.modalView}>
-          <Calendar />
+          <Text>{value.toISOString().slice(0, 10)}</Text>
+          <Calendar
+            current={value.toISOString().slice(0, 10)}
+            onDayPress={(day) => {
+              console.log("day", new Date(day.dateString));
+              setValue(new Date(day.dateString));
+              setShowModal(false);
+            }}
+          />
         </View>
-        <TouchableOpacity
-          style={styles.closeButton}
-          onPress={() => setShowModal(false)}
-        >
-          <Text style={styles.closeButtonText}>Close</Text>
-        </TouchableOpacity>
       </View>
     </Modal>
   );

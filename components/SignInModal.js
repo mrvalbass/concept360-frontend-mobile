@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { login } from "../reducers/user";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export default function SignInModal({ navigation, signInOpen, setSignInOpen }) {
   const dispatch = useDispatch();
@@ -63,30 +64,46 @@ export default function SignInModal({ navigation, signInOpen, setSignInOpen }) {
   };
 
   return (
-    <Modal animationType="slide" transparent={true} visible={signInOpen}>
-      <View style={styles.modalView}>
-        <Text style={styles.text}>Connexion</Text>
+    <View>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={signInOpen}
+        onRequestClose={() => setSignInOpen(false)}
+      >
+        <View style={styles.modalView}>
+          <FontAwesome
+            name="times"
+            size={20}
+            style={{ color: "black", paddingLeft: 220 }}
+            onPress={() => setSignInOpen(false)}
+          />
+          <Text style={styles.text}>Connexion</Text>
 
-        <FloatingTextInput
-          value={formData.email}
-          updateValue={updateValue}
-          label="E-mail"
-          name="email"
-        />
-        <FloatingTextInput
-          value={formData.password}
-          updateValue={updateValue}
-          label="Mot de passe"
-          name="password"
-        />
+          <FloatingTextInput
+            value={formData.email}
+            updateValue={updateValue}
+            label="E-mail"
+            name="email"
+          />
+          <FloatingTextInput
+            value={formData.password}
+            updateValue={updateValue}
+            label="Mot de passe"
+            name="password"
+          />
 
-        <View style={styles.containerConnect}>
-          <TouchableOpacity style={styles.connect} onPress={handleCloseSignIn}>
-            <Text style={styles.btnText}>Connecter</Text>
-          </TouchableOpacity>
+          <View style={styles.containerConnect}>
+            <TouchableOpacity
+              style={styles.connect}
+              onPress={handleCloseSignIn}
+            >
+              <Text style={styles.btnText}>Connecter</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </Modal>
+      </Modal>
+    </View>
   );
 }
 
