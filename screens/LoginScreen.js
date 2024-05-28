@@ -27,6 +27,7 @@ export default function LoginScreen({ navigation }) {
     if (isFocused) {
       (async () => {
         const token = await AsyncStorage.getItem("userToken");
+        //console.log("token is", token);
         if (token) {
           const { success } = await LocalAuthentication.authenticateAsync();
 
@@ -34,7 +35,9 @@ export default function LoginScreen({ navigation }) {
             const data = await fetch(
               `https://concept360-backend-five.vercel.app/users/patients/token/${token}`
             ).then((r) => r.json());
+            console.log("data is", data);
             dispatch(login(data.patient.user));
+            dispatch(addPhoto(data.patient.profilePictureURL));
             navigation.navigate("TabNavigator", { screen: "Home" });
           }
         }

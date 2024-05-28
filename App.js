@@ -13,12 +13,11 @@ import AppointmentScreen from "./screens/AppointmentScreen";
 import SettingScreen from "./screens/SettingScreen";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
+const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 const store = configureStore({
   reducer: { user },
 });
-
-const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
   return (
