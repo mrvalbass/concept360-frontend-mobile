@@ -49,7 +49,7 @@ export default function HomeScreen({ _id }) {
       }
       const formData = new FormData();
       const uri = result.assets[0]?.uri;
-      console.log("uri is", result.assets[0].uri);
+      //console.log("uri is", result.assets[0].uri);
       if (uri) {
         formData.append("photoFromFront", {
           uri: uri,

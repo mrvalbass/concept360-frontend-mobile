@@ -1,28 +1,39 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
+import moment from "moment";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
-export default function ProgramCard({ _id }) {
+export default function ProgramCard({ _id, date }) {
   const user = useSelector((state) => state.user.value);
   const [programs, setPrograms] = useState([]);
 
   useEffect(() => {
     (async () => {
       const programsData = await fetch(
-        // "https://concept360-backend-five.vercel.app/programs"
-        `http://192.168.14.175:3000/programs/${user._id}`
+        // `https://concept360-backend-five.vercel.app/programs/${user._id}`
+        `http://192.168.14.175:3000/programs/user/${user._id}`
       ).then((r) => r.json());
-      setPrograms(programsData.programs);
-      // console.log("programs", programs.program[0].routine.exercises);
+      setPrograms(programsData.userProgram.program);
     })();
   }, []);
-  // console.log("programs", programs.notes);
 
-  // const programComponents =
-  //   programs &&
-  //   programs.map((program, i) => <View key={i} {...program}></View>);
+  const programFilteredByDate = programs.filter((programRoutine) => {
+    return (
+      moment(programRoutine.date).unix() ===
+      moment("2024-05-28T22:00:00.000Z").unix()
+    );
+  });
+  console.log(programFilteredByDate);
+
+  const programComponent = programFilteredByDate.map((program, i) => (
+    <View key={i}>
+      <Text>{program.comment}</Text>
+      <Text>{`exercises: ${program.routine[0]}`}</Text>
+    </View>
+  ));
+  console.log(programComponent);
 
   return (
     <View style={styles.container}>
@@ -30,7 +41,7 @@ export default function ProgramCard({ _id }) {
         {/* programme de {createdBy.firstName} {createdBy.lastName} */}
         Programme {_id}
       </Text>
-      <View>{programs}</View>
+      <View>{programComponent}</View>
       {/* {checkbox && <input type='checkbox' />} */}
       <Text style={styles.text2}>
         cliquez pour plus de détails sur l'exercice
