@@ -91,6 +91,7 @@ export default function SignInModal({ navigation, signInOpen, setSignInOpen }) {
             updateValue={updateValue}
             label="Mot de passe"
             name="password"
+            secureTextEntry
           />
 
           <View style={styles.containerConnect}>
@@ -121,11 +122,11 @@ const styles = StyleSheet.create({
   connect: {
     borderRadius: 5,
     height: 39,
-    paddingRight: 20,
-    paddingBottom: 20,
     width: 100,
     borderWidth: 1.5,
     borderColor: "#c2c2c2",
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   text: {
