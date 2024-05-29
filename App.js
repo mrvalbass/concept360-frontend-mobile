@@ -11,6 +11,7 @@ import HomeScreen from "./screens/HomeScreen";
 import DocumentScreen from "./screens/DocumentScreen";
 import AppointmentScreen from "./screens/AppointmentScreen";
 import SettingScreen from "./screens/SettingScreen";
+import ChangeContactScreen from "./screens/ChangeContactScreen";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
@@ -62,6 +63,7 @@ export default function App() {
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
         </Stack.Navigator>
+        <Stack.Screen name="ChangeContact" component={ChangeContactScreen} />
       </NavigationContainer>
     </Provider>
   );

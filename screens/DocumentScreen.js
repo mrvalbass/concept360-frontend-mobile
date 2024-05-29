@@ -1,5 +1,6 @@
 import { Text, StyleSheet, SafeAreaView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import Profil from "../components/Profil";
 
 export default function DocumentScreen({}) {
   return (
@@ -11,6 +12,9 @@ export default function DocumentScreen({}) {
         end={{ x: 1, y: 1 }}
         locations={[0.1, 0.4, 1]}
       />
+      <View style={{ justifyContent: "flex-start" }}>
+        <Profil />
+      </View>
       <Text>Document Screen</Text>
     </SafeAreaView>
   );
@@ -19,7 +23,6 @@ export default function DocumentScreen({}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
   },
   gradient: {
