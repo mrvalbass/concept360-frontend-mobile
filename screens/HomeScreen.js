@@ -7,7 +7,6 @@ import {
   SafeAreaView,
   ScrollView,
 } from "react-native";
-
 import { LinearGradient } from "expo-linear-gradient";
 import * as ImagePicker from "expo-image-picker";
 import { useState, useEffect } from "react";
@@ -15,8 +14,9 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useSelector } from "react-redux";
 import { addPhoto } from "../reducers/user";
 import { useDispatch } from "react-redux";
-import CalendarInline from "../components/CalendarAgenda";
+import CalendarInline from "../components/calendarAgenda";
 import Profil from "../components/Profil";
+import ProgramCard from "../components/ProgramCard";
 
 export default function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
