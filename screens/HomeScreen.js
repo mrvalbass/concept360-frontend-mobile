@@ -1,31 +1,17 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  Button,
-  SafeAreaView,
-  ScrollView,
-} from "react-native";
-
-import { useState, useEffect } from "react";
-
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import { addPhoto } from "../reducers/user";
+import { StyleSheet, SafeAreaView, ScrollView, Text } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
-import * as ImagePicker from "expo-image-picker";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
 
-import CalendarInline from "../components/calendarAgenda";
+import CalendarInline from "../components/CalendarInLine";
 import Profil from "../components/Profil";
+import { useState } from "react";
+import moment from "moment";
 import ProgramCard from "../components/ProgramCard";
 
-export default function HomeScreen({}) {
-  const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.value);
-
+export default function HomeScreen({ navigation }) {
+  const [selectedDate, setSelectedDate] = useState(
+    moment(new Date()).startOf("day")
+  );
   return (
     <SafeAreaView style={styles.container}>
       <LinearGradient
@@ -35,13 +21,17 @@ export default function HomeScreen({}) {
         end={{ x: 1, y: 1 }}
         locations={[0.1, 0.4, 1]}
       />
-
-      <Profil />
-      <View style={styles.calendar}>
-        <ScrollView>
-          <CalendarInline />
-        </ScrollView>
-      </View>
+      <Profil editable greeting />
+      <CalendarInline
+        selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
+      />
+      <Text style={styles.title}>
+        Programme du {moment(selectedDate).format("DD/MM")}
+      </Text>
+      <ScrollView>
+        <ProgramCard selectedDate={selectedDate} navigation={navigation} />
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -51,13 +41,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
-  containerProfil: {
-    alignItems: "center",
-    marginTop: 100,
-  },
-  calendar: {
-    //backgroundColor: "pink",
-    width: "100%",
-    height: "95%",
+  title: {
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 20,
+    color: "#fff",
+    marginBottom: 20,
   },
 });

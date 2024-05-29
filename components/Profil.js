@@ -3,101 +3,116 @@ import {
   Text,
   StyleSheet,
   Image,
-  Button,
   SafeAreaView,
-  ScrollView,
+  Linking,
+  Modal,
+  Pressable,
 } from "react-native";
 
-import { LinearGradient } from "expo-linear-gradient";
-import * as ImagePicker from "expo-image-picker";
 import { useState, useEffect } from "react";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
+
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { addPhoto } from "../reducers/user";
-import { useDispatch } from "react-redux";
-import CalendarInline from "./CalendarAgenda";
 
-export default function Profil({}) {
+import * as ImagePicker from "expo-image-picker";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+
+export default function Profil({ editable, greeting }) {
   const dispatch = useDispatch();
-  const [hasPermission, setHasPermission] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const user = useSelector((state) => state.user.value);
 
-  //Récupération de la photo de profil depuis ses images persos et envoi dans coundinary
   useEffect(() => {
     (async () => {
-      const { status } = await ImagePicker.getMediaLibraryPermissionsAsync();
-      setHasPermission(status === "granted");
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
     })();
   }, []);
 
-  const askForPermission = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    setHasPermission(status === "granted");
-  };
-
   const pickImage = async () => {
-    if (hasPermission) {
+    const { status } = await ImagePicker.getMediaLibraryPermissionsAsync();
+    if (status === "granted") {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
-        aspect: [4, 3],
+        aspect: [1, 1],
         quality: 1,
       });
-      //console.log("result is", result);
       if (!result.canceled) {
-        dispatch(addPhoto(result.assets[0].uri));
-      }
-      const formData = new FormData();
-      const uri = result.assets[0]?.uri;
-      //console.log("uri is", result.assets[0].uri);
-      if (uri) {
-        formData.append("photoFromFront", {
-          uri: uri,
-          name: "photo.jpg",
-          type: "image/jpeg",
-        });
-        formData.append("token", user.token);
-      }
-
-      console.log("form is", formData);
-      const data = await fetch(
-        // "http://192.168.143.1:3000/users/upload",
-        "https://concept360-backend-five.vercel.app/users/upload",
-        {
-          method: "POST",
-          body: formData,
+        const formData = new FormData();
+        const uri = result.assets[0]?.uri;
+        if (uri) {
+          formData.append("photoFromFront", {
+            uri: uri,
+            name: "photo.jpg",
+            type: "image/jpeg",
+          });
+          formData.append("token", user.token);
         }
-      ).then((response) => response.json());
-      console.log("CLOUDINARY", data);
-      data.result && dispatch(addPhoto(data.url));
+
+        const data = await fetch(
+          // "http://192.168.143.1:3000/users/upload",
+          "https://concept360-backend-five.vercel.app/users/upload",
+          {
+            method: "POST",
+            body: formData,
+          }
+        ).then((r) => r.json());
+        data.result && dispatch(addPhoto(data.url));
+      }
+    } else {
+      setShowModal(true);
     }
   };
   return (
     <SafeAreaView>
-      {hasPermission === null ? (
-        <Text>Requesting for permission...</Text>
-      ) : hasPermission === false ? (
-        <View style={styles.containerProfil}>
-          <Text>No access to media library</Text>
-          <Button title="Grant Permission" onPress={askForPermission} />
+      <Modal
+        visible={showModal}
+        animationType="slide"
+        transparent={true}
+        style={styles.modal}
+      >
+        <View style={styles.modalView}>
+          <FontAwesome
+            name="times"
+            size={25}
+            style={styles.closeIcon}
+            onPress={() => setShowModal(false)}
+          />
+          <Text style={styles.modalText}>
+            Vous devez donner l'autorisation à Concept 360 d'accéder à vos
+            médias
+          </Text>
+          <Pressable
+            style={styles.btn}
+            onPress={() => {
+              Linking.openSettings();
+              setShowModal(false);
+            }}
+          >
+            <Text style={styles.btnText}>Paramètres</Text>
+          </Pressable>
         </View>
-      ) : (
-        <View style={styles.containerProfil}>
-          {user.profilePictureURL && (
-            <Image
-              style={styles.imageProfil}
-              source={{ uri: user.profilePictureURL }}
-            />
-          )}
+      </Modal>
+      <View style={styles.containerProfil}>
+        {user.profilePictureURL && (
+          <Image
+            style={styles.imageProfil}
+            source={{ uri: user.profilePictureURL }}
+          />
+        )}
+        {editable && (
           <FontAwesome
             name="pencil-square-o"
             size={20}
             style={styles.iconProfil}
             onPress={pickImage}
           />
-          <View style={styles.containerHello}>
-            <Text style={styles.hello}>Bonjour {user.firstName}</Text>
-          </View>
+        )}
+      </View>
+      {greeting && (
+        <View style={styles.greetingContainer}>
+          <Text style={styles.greeting}>Bonjour {user.firstName}</Text>
         </View>
       )}
     </SafeAreaView>
@@ -105,23 +120,67 @@ export default function Profil({}) {
 }
 
 const styles = StyleSheet.create({
+  modalView: {
+    backgroundColor: "white",
+    padding: 20,
+    width: "75%",
+    marginHorizontal: "auto",
+    marginVertical: "auto",
+    borderRadius: 5,
+    alignItems: "center",
+    gap: 20,
+  },
+
+  closeIcon: {
+    position: "absolute",
+    right: 10,
+    top: 8,
+  },
+
+  modalText: {
+    marginTop: 10,
+    fontSize: 18,
+    lineHeight: 30,
+    textAlign: "center",
+  },
+
+  btn: {
+    borderRadius: 5,
+    paddingHorizontal: 35,
+    paddingVertical: 10,
+    borderWidth: 1.5,
+    borderColor: "#c2c2c2",
+    alignSelf: "flex-end",
+  },
+
+  btnText: {
+    fontSize: 16,
+  },
+
+  containerProfil: {
+    alignItems: "center",
+    marginTop: 100,
+  },
+
   imageProfil: {
     width: 100,
     height: 100,
     borderRadius: 50,
   },
-  containerProfil: {
-    alignItems: "center",
-    paddingTop: 100,
-  },
+
   iconProfil: {
     color: "white",
-    paddingLeft: 100,
+    position: "absolute",
+    bottom: 0,
+    right: "40%",
   },
-  containerHello: {
-    alignItems: "",
+
+  greetingContainer: {
+    marginTop: 20,
   },
-  hello: {
+
+  greeting: {
+    textAlign: "center",
     fontSize: 25,
     color: "#fff",
   },

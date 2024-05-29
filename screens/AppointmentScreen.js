@@ -1,4 +1,4 @@
-import { Text, StyleSheet, SafeAreaView } from "react-native";
+import { View, Text, StyleSheet, SafeAreaView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Profil from "../components/Profil";
 
@@ -13,7 +13,7 @@ export default function AppointmentScreen({}) {
         locations={[0.1, 0.4, 1]}
       />
       <View style={{ justifyContent: "flex-start" }}>
-        <Profil />
+        <Profil greeting />
       </View>
       <Text>Appointment Screen</Text>
     </SafeAreaView>
