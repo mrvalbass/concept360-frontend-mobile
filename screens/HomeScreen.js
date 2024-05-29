@@ -7,26 +7,30 @@ import {
   SafeAreaView,
   ScrollView,
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import * as ImagePicker from "expo-image-picker";
+
 import { useState, useEffect } from "react";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
+
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { addPhoto } from "../reducers/user";
-import { useDispatch } from "react-redux";
+
+import { LinearGradient } from "expo-linear-gradient";
+import * as ImagePicker from "expo-image-picker";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+
 import CalendarInline from "../components/calendarAgenda";
 import Profil from "../components/Profil";
 import ProgramCard from "../components/ProgramCard";
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen({}) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
 
   return (
     <SafeAreaView style={styles.container}>
       <LinearGradient
-        style={styles.gradient}
-        colors={["rgba(2,0,36,1)", "rgba(6,125,93,1)", "rgba(0,165,172,1)"]}
+        style={StyleSheet.absoluteFillObject}
+        colors={["#034A37", "#067D5D", "#00A5AC"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         locations={[0.1, 0.4, 1]}
@@ -45,15 +49,11 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: "center",
-    // alignItems: "center",
   },
-  gradient: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: 0,
-    height: "100%",
+
+  containerProfil: {
+    alignItems: "center",
+    marginTop: 100,
   },
   calendar: {
     //backgroundColor: "pink",

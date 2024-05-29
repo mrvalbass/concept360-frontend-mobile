@@ -15,19 +15,19 @@ import ChangeContactScreen from "./screens/ChangeContactScreen";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
-const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
 const store = configureStore({
   reducer: { user },
 });
+
+const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ color, size }) => {
+        tabBarIcon: ({ color }) => {
           let iconName = "";
-
           if (route.name === "Home") {
             iconName = "home";
           } else if (route.name === "Document") {
@@ -39,7 +39,6 @@ const TabNavigator = () => {
           }
           return <FontAwesome name={iconName} size={25} color={color} />;
         },
-
         tabBarActiveTintColor: "#020024",
         tabBarInactiveTintColor: "white",
         headerShown: false,

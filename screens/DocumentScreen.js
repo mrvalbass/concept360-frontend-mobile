@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, SafeAreaView } from "react-native";
+import { Text, StyleSheet, SafeAreaView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Profil from "../components/Profil";
 
