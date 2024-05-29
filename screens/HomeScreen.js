@@ -16,62 +16,11 @@ import { useSelector } from "react-redux";
 import { addPhoto } from "../reducers/user";
 import { useDispatch } from "react-redux";
 import CalendarInline from "../components/CalendarAgenda";
+import Profil from "../components/Profil";
 
 export default function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
-  const [hasPermission, setHasPermission] = useState(null);
   const user = useSelector((state) => state.user.value);
-
-  //Récupération de la photo de profil depuis ses images persos et envoi dans coundinary
-  useEffect(() => {
-    (async () => {
-      const { status } = await ImagePicker.getMediaLibraryPermissionsAsync();
-      setHasPermission(status === "granted");
-    })();
-  }, []);
-
-  const askForPermission = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    setHasPermission(status === "granted");
-  };
-
-  const pickImage = async () => {
-    if (hasPermission) {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-      });
-      //console.log("result is", result);
-      if (!result.canceled) {
-        dispatch(addPhoto(result.assets[0].uri));
-      }
-      const formData = new FormData();
-      const uri = result.assets[0]?.uri;
-      //console.log("uri is", result.assets[0].uri);
-      if (uri) {
-        formData.append("photoFromFront", {
-          uri: uri,
-          name: "photo.jpg",
-          type: "image/jpeg",
-        });
-        formData.append("token", user.token);
-      }
-
-      console.log("form is", formData);
-      const data = await fetch(
-        // "http://192.168.143.1:3000/users/upload",
-        "https://concept360-backend-five.vercel.app/users/upload",
-        {
-          method: "POST",
-          body: formData,
-        }
-      ).then((response) => response.json());
-      console.log("CLOUDINARY", data);
-      data.result && dispatch(addPhoto(data.url));
-    }
-  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -83,39 +32,12 @@ export default function HomeScreen({ navigation }) {
         locations={[0.1, 0.4, 1]}
       />
 
-      {hasPermission === null ? (
-        <Text>Requesting for permission...</Text>
-      ) : hasPermission === false ? (
-        <View style={styles.containerProfil}>
-          <Text>No access to media library</Text>
-          <Button title="Grant Permission" onPress={askForPermission} />
-        </View>
-      ) : (
-        <View style={styles.containerProfil}>
-          {user.profilePictureURL && (
-            <Image
-              style={styles.imageProfil}
-              source={{ uri: user.profilePictureURL }}
-            />
-          )}
-          <FontAwesome
-            name="pencil-square-o"
-            size={20}
-            style={styles.iconProfil}
-            onPress={pickImage}
-          />
-          <View style={styles.containerHello}>
-            <Text style={styles.hello}>
-              Bonjour {user.firstName} {user.lastName}
-            </Text>
-          </View>
-          <View style={styles.calendar}>
-            <ScrollView>
-              <CalendarInline />
-            </ScrollView>
-          </View>
-        </View>
-      )}
+      <Profil />
+      <View style={styles.calendar}>
+        <ScrollView>
+          <CalendarInline />
+        </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }
@@ -132,25 +54,6 @@ const styles = StyleSheet.create({
     right: 0,
     top: 0,
     height: "100%",
-  },
-  imageProfil: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-  },
-  containerProfil: {
-    alignItems: "center",
-    paddingTop: 100,
-  },
-  iconProfil: {
-    color: "white",
-    paddingLeft: 100,
-  },
-  containerHello: {
-    alignItems: "",
-  },
-  hello: {
-    fontSize: 25,
   },
   calendar: {
     //backgroundColor: "pink",

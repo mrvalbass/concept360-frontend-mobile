@@ -105,12 +105,12 @@ export default function SignUpModal({ navigation, signUpOpen, setSignUpOpen }) {
           name="password"
           secureTextEntry
         />
-        <View style={styles.containerConnect}>
-          <TouchableOpacity style={styles.connect} onPress={handleCloseSignUp}>
-            <Text>Connecter</Text>
-          </TouchableOpacity>
-        </View>
+        {/* <View style={styles.containerConnect}> */}
+        <TouchableOpacity style={styles.connect} onPress={handleCloseSignUp}>
+          <Text>Connecter</Text>
+        </TouchableOpacity>
       </View>
+      {/* </View> */}
     </Modal>
   );
 }
@@ -128,16 +128,18 @@ const styles = StyleSheet.create({
   containerConnect: {
     borderWidth: 1,
     borderColor: "red",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   connect: {
     borderRadius: 5,
     height: 39,
-    paddingRight: 20,
-    paddingBottom: 20,
     width: 100,
     borderWidth: 1.5,
     borderColor: "#c2c2c2",
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   text: {
