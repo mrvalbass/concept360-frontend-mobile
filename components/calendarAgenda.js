@@ -161,23 +161,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  titleContainer: {
-    alignItems: "center",
-  },
-  dailyActivity: {
-    fontSize: 25,
-    fontWeight: "600",
-  },
-  subtitle: {
-    fontSize: 17,
-    fontWeight: "600",
-    color: "#999999",
-    marginBottom: 12,
-  },
-  footer: {
-    marginTop: "auto",
-    paddingHorizontal: 16,
-  },
   /** Item */
   item: {
     flex: 1,
@@ -189,6 +172,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
   },
+
   itemRow: {
     width: width,
     flexDirection: "row",
@@ -196,51 +180,16 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 12,
   },
+
   itemWeekday: {
     fontSize: 13,
     fontWeight: "500",
     color: "#fff",
     marginBottom: 4,
   },
+
   itemDate: {
     fontSize: 15,
-    fontWeight: "600",
-    color: "#fff",
-  },
-  /** Placeholder */
-  placeholder: {
-    flexGrow: 1,
-    flexShrink: 1,
-    flexBasis: 0,
-    height: 400,
-    marginTop: 0,
-    padding: 0,
-    backgroundColor: "blue",
-  },
-  placeholderInset: {
-    borderWidth: 4,
-    borderColor: "#e5e7eb",
-    borderStyle: "dashed",
-    borderRadius: 9,
-    flexGrow: 1,
-    flexShrink: 1,
-    flexBasis: 0,
-  },
-  /** Button */
-  btn: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 8,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderWidth: 1,
-    backgroundColor: "#007aff",
-    borderColor: "#007aff",
-  },
-  btnText: {
-    fontSize: 18,
-    lineHeight: 26,
     fontWeight: "600",
     color: "#fff",
   },
