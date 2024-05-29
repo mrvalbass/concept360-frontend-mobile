@@ -12,6 +12,7 @@ import DocumentScreen from "./screens/DocumentScreen";
 import AppointmentScreen from "./screens/AppointmentScreen";
 import SettingScreen from "./screens/SettingScreen";
 import ChangeContactScreen from "./screens/ChangeContactScreen";
+import DailyScreen from "./screens/DailyScreen";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
@@ -61,6 +62,7 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Daily" component={DailyScreen} />
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
         </Stack.Navigator>
         <Stack.Screen name="ChangeContact" component={ChangeContactScreen} />
