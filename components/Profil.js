@@ -15,7 +15,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useSelector } from "react-redux";
 import { addPhoto } from "../reducers/user";
 import { useDispatch } from "react-redux";
-import CalendarInline from "../components/CalendarAgenda";
+import CalendarInline from "./CalendarAgenda";
 
 export default function Profil({}) {
   const dispatch = useDispatch();
