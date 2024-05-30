@@ -43,7 +43,6 @@ export default function SignInModal({ navigation, signInOpen, setSignInOpen }) {
         throw new Error(data.error);
       }
     } catch (err) {
-      console.log(err);
       Alert.alert("Erreur", "Une erreur s'est produite. Veuillez réessayer.");
     }
   };
@@ -86,6 +85,7 @@ export default function SignInModal({ navigation, signInOpen, setSignInOpen }) {
           updateValue={updateValue}
           label="Mot de passe"
           name="password"
+          secureTextEntry
         />
         <Pressable style={styles.connect} onPress={handleCloseSignIn}>
           <Text style={styles.btnText}>Connecter</Text>

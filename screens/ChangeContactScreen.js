@@ -26,8 +26,8 @@ export default function ChangeContactScreen({ navigation }) {
     lastName: "",
     email: "",
     password: "",
+    newPassword: "",
   });
-  console.log("user", user);
   const handleClick = () => {
     updatePatient();
   };
@@ -40,7 +40,7 @@ export default function ChangeContactScreen({ navigation }) {
   }, []);
 
   const updatePatient = async () => {
-    const { firstName, lastName, email } = formData;
+    const { firstName, lastName, email, password, newPassword } = formData;
     const options = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -48,6 +48,8 @@ export default function ChangeContactScreen({ navigation }) {
         firstName,
         lastName,
         email,
+        password,
+        newPassword,
       }),
     };
     const response = await fetch(
@@ -62,12 +64,12 @@ export default function ChangeContactScreen({ navigation }) {
         lastName: "",
         email: "",
         password: "",
+        newPassword: "",
       });
       onRefresh();
     } else {
       Alert.alert("Une erreur s'est produite");
     }
-    console.log("response", response);
   };
 
   const updateValue = (name, value) => {
@@ -107,7 +109,8 @@ export default function ChangeContactScreen({ navigation }) {
                 style={{
                   color: "#fff",
                   position: "absolute",
-                  right: 70,
+                  right: 40,
+                  top: 0,
                 }}
                 onPress={() => goTo()}
               />
@@ -136,8 +139,15 @@ export default function ChangeContactScreen({ navigation }) {
           <FloatingTextInput
             value={formData.password}
             updateValue={updateValue}
-            label="Mot de passe"
+            label="Mot de passe actuel"
             name="password"
+            secureTextEntry
+          />
+          <FloatingTextInput
+            value={formData.newPassword}
+            updateValue={updateValue}
+            label="Nouveau mot de passe"
+            name="newPassword"
             secureTextEntry
           />
           <TouchableOpacity style={styles.btn} onPress={() => handleClick()}>
@@ -159,15 +169,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   containerInput: {
-    gap: 50,
+    gap: 30,
     alignItems: "center",
-    marginTop: 50,
+    marginTop: 100,
     width: 300,
   },
   title: {
     color: "white",
     fontWeight: "600",
     fontSize: 20,
+    paddingBottom: 20,
   },
   gradient: {
     position: "absolute",
@@ -179,7 +190,7 @@ const styles = StyleSheet.create({
   btn: {
     backgroundColor: "#067D5D",
     borderRadius: 10,
-    marginTop: 150,
+    marginTop: 70,
     height: 50,
     width: 290,
     alignItems: "center",

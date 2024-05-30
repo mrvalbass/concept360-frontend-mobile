@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     height: 50,
     paddingHorizontal: 10,
+    backgroundColor: "white",
   },
   textStyle: {
     paddingBottom: 28,

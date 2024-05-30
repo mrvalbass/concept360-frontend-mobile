@@ -42,8 +42,10 @@ const styles = StyleSheet.create({
     top: 0,
     height: "100%",
   },
-  appointment: {
+  appointement: {
     marginTop: 50,
     marginBottom: 150,
+    width: "100%",
+    paddingLeft: 30,
   },
 });
