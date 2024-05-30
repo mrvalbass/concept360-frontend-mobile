@@ -34,11 +34,11 @@ export default function AppointmentCard({}) {
       setSpecialistData(response.specialists);
     })();
   }, []);
-  console.log("spe is", specialistData);
+
   if (specialistData === null) {
     return (
-      <View>
-        <Text>is loading ...</Text>
+      <View style={{ alignItems: "center", justifyContent: "center" }}>
+        <Text style={{ color: "#fff", fontSize: 20 }}>is loading ...</Text>
       </View>
     );
   }

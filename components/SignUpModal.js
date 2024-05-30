@@ -18,9 +18,27 @@ export default function SignUpModal({ navigation, signUpOpen, setSignUpOpen }) {
     email: "",
     password: "",
   });
+  const emailTest = (email) => {
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    ///^[a-zA-Z0-9]+([\._%+-][a-zA-Z0-9]+)@[a-zA-Z0-9]+([\.-][a-zA-Z0-9]+)\.[a-zA-Z]{2,}$/i;
+
+    if (!regex.test(email)) {
+      return false;
+    }
+    const domain = email.split("@")[1];
+    if (domain.includes("..")) {
+      return false;
+    }
+    if (/^[-.]/.test(domain) || /[-.]$/.test(domain)) {
+      return false;
+    }
+    return true;
+  };
 
   const handleSignUp = async () => {
     try {
+      if (!emailTest(formData.email)) throw new Error("Email non conforme");
+
       const options = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -50,7 +68,6 @@ export default function SignUpModal({ navigation, signUpOpen, setSignUpOpen }) {
         throw new Error(data.error);
       }
     } catch (err) {
-      console.log(err);
       Alert.alert("Erreur", "Une erreur s'est produite. Veuillez réessayer.");
     }
   };
