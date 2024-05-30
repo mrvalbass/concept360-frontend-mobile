@@ -12,6 +12,8 @@ import DocumentScreen from "./screens/DocumentScreen";
 import AppointmentScreen from "./screens/AppointmentScreen";
 import SettingScreen from "./screens/SettingScreen";
 import ChangeContactScreen from "./screens/ChangeContactScreen";
+import DailyScreen from "./screens/DailyScreen";
+
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 const SettingStack = createNativeStackNavigator();
@@ -42,9 +44,8 @@ const TabNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ color, size }) => {
+        tabBarIcon: ({ color }) => {
           let iconName = "";
-
           if (route.name === "Home") {
             iconName = "home";
           } else if (route.name === "Document") {
@@ -56,7 +57,6 @@ const TabNavigator = () => {
           }
           return <FontAwesome name={iconName} size={25} color={color} />;
         },
-
         tabBarActiveTintColor: "#020024",
         tabBarInactiveTintColor: "white",
         headerShown: false,
@@ -79,6 +79,7 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Daily" component={DailyScreen} />
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
         </Stack.Navigator>
         <Stack.Screen name="ChangeContact" component={ChangeContactScreen} />

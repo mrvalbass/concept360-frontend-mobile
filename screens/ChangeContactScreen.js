@@ -152,16 +152,17 @@ export default function ChangeContactScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   refresh: {
     flex: 1,
   },
   containerInput: {
     gap: 50,
-    borderWidth: 2,
-    borderColor: "red",
     alignItems: "center",
     marginTop: 50,
+    width: 300,
   },
   title: {
     color: "white",
@@ -179,14 +180,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#067D5D",
     borderRadius: 10,
     marginTop: 150,
-    height: 70,
+    height: 50,
     width: 290,
     alignItems: "center",
     justifyContent: "center",
   },
   btnText: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "600",
+    color: "#fff",
     fontFamily: "Roboto-Regular",
   },
 });
