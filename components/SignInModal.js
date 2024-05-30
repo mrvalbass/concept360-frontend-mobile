@@ -43,7 +43,6 @@ export default function SignInModal({ navigation, signInOpen, setSignInOpen }) {
         throw new Error(data.error);
       }
     } catch (err) {
-      console.log(err);
       Alert.alert("Erreur", "Une erreur s'est produite. Veuillez réessayer.");
     }
   };

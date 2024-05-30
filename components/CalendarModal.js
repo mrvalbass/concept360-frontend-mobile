@@ -13,26 +13,26 @@ export default function CalendarModal({
   value,
   navigateToSlide,
 }) {
-
   return (
     <Modal
-      animationType='slide'
+      animationType="slide"
       transparent={true}
       visible={showModal}
-      onRequestClose={() => setShowModal(false)}>
+      onRequestClose={() => setShowModal(false)}
+    >
       <View
         style={{
           flex: 1,
           alignItems: "center",
           justifyContent: "center",
           backgroundColor: "rgba(0,0,0,0.5)",
-        }}>
+        }}
+      >
         <View style={styles.modalView}>
           <Text>{value.toISOString().slice(0, 10)}</Text>
           <Calendar
             current={value.toISOString().slice(0, 10)}
             onDayPress={(day) => {
-              console.log("day", new Date(day.dateString));
               setValue(new Date(day.dateString));
               setShowModal(false);
             }}

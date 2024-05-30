@@ -68,7 +68,6 @@ export default function SignUpModal({ navigation, signUpOpen, setSignUpOpen }) {
         throw new Error(data.error);
       }
     } catch (err) {
-      console.log(err);
       Alert.alert("Erreur", "Une erreur s'est produite. Veuillez réessayer.");
     }
   };

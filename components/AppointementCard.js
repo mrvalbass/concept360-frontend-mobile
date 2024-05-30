@@ -37,8 +37,8 @@ export default function AppointmentCard({}) {
 
   if (specialistData === null) {
     return (
-      <View>
-        <Text>is loading ...</Text>
+      <View style={{ alignItems: "center", justifyContent: "center" }}>
+        <Text style={{ color: "#fff", fontSize: 20 }}>is loading ...</Text>
       </View>
     );
   }
