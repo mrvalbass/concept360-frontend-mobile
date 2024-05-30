@@ -12,9 +12,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 import Profil from "../components/Profil";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import ChangeContactScreen from "./ChangeContactScreen";
 
-export default function SettingScreen({ navigation }) {
+export default function SettingScreen({ navigation, ChangeContactScreen }) {
   const dispatch = useDispatch();
 
   const handleLogout = async () => {
@@ -106,15 +105,15 @@ const styles = StyleSheet.create({
     height: 70,
     width: 290,
     borderWidth: 1.5,
-    borderColor: "#00A5AC",
+    borderColor: "#067D5D",
     alignItems: "center",
     justifyContent: "space-evenly",
-    backgroundColor: "#00A5AC",
+    backgroundColor: "#067D5D",
   },
 
   closeButton: {
     marginTop: 20,
-    backgroundColor: "#00A5AC",
+    backgroundColor: "#067D5D",
     borderRadius: 10,
     marginTop: 100,
     height: 70,

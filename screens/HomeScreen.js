@@ -5,25 +5,34 @@ import {
   Image,
   Button,
   SafeAreaView,
+  RefreshControl,
   ScrollView,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import * as ImagePicker from "expo-image-picker";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useSelector } from "react-redux";
 import { addPhoto } from "../reducers/user";
 import { useDispatch } from "react-redux";
-import CalendarInline from "../components/calendarAgenda";
+import CalendarInline from "../components/CalendarAgenda";
 import Profil from "../components/Profil";
 import ProgramCard from "../components/ProgramCard";
 
 export default function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <LinearGradient
         style={styles.gradient}
         colors={["rgba(2,0,36,1)", "rgba(6,125,93,1)", "rgba(0,165,172,1)"]}
@@ -31,14 +40,25 @@ export default function HomeScreen({ navigation }) {
         end={{ x: 1, y: 1 }}
         locations={[0.1, 0.4, 1]}
       />
-
-      <Profil />
-      <View style={styles.calendar}>
-        <ScrollView>
-          <CalendarInline />
-        </ScrollView>
-      </View>
-    </SafeAreaView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            style={styles.refresh}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={["#067D5D"]}
+            progressBackgroundColor="#FFFFFF"
+          />
+        }
+      >
+        <Profil />
+        <View style={styles.calendar}>
+          <ScrollView>
+            <CalendarInline />
+          </ScrollView>
+        </View>
+      </ScrollView>
+    </View>
   );
 }
 

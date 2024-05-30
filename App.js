@@ -12,14 +12,31 @@ import DocumentScreen from "./screens/DocumentScreen";
 import AppointmentScreen from "./screens/AppointmentScreen";
 import SettingScreen from "./screens/SettingScreen";
 import ChangeContactScreen from "./screens/ChangeContactScreen";
-
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
+const SettingStack = createNativeStackNavigator();
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const store = configureStore({
   reducer: { user },
 });
+
+function SettingStackScreen() {
+  return (
+    <SettingStack.Navigator>
+      <SettingStack.Screen
+        name="Setting"
+        component={SettingScreen}
+        options={{ title: "Paramètres", headerShown: false }}
+      />
+      <SettingStack.Screen
+        name="ChangeContact"
+        component={ChangeContactScreen}
+        options={{ tabBarLabel: "Mon profil!", headerShown: false }}
+      />
+    </SettingStack.Navigator>
+  );
+}
 
 const TabNavigator = () => {
   return (
@@ -51,7 +68,7 @@ const TabNavigator = () => {
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Document" component={DocumentScreen} />
       <Tab.Screen name="Appointment" component={AppointmentScreen} />
-      <Tab.Screen name="Setting" component={SettingScreen} />
+      <Tab.Screen name="Setting" component={SettingStackScreen} />
     </Tab.Navigator>
   );
 };
