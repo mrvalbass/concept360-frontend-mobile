@@ -1,6 +1,6 @@
-import { View, Text, StyleSheet, SafeAreaView } from "react-native";
+import { View, Text, StyleSheet, SafeAreaView, Linking } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import Profil from "../components/Profil";
+import AppointmentCard from "../components/AppointementCard";
 
 export default function AppointmentScreen({}) {
   return (
@@ -12,10 +12,20 @@ export default function AppointmentScreen({}) {
         end={{ x: 1, y: 1 }}
         locations={[0.1, 0.4, 1]}
       />
-      <View style={{ justifyContent: "flex-start" }}>
-        <Profil greeting />
+
+      <Text
+        style={{
+          color: "#fff",
+          fontSize: 23,
+          paddingTop: 120,
+          fontWeight: "600",
+        }}
+      >
+        Prendre un rendez-vous :
+      </Text>
+      <View style={styles.appointement}>
+        <AppointmentCard />
       </View>
-      <Text>Appointment Screen</Text>
     </SafeAreaView>
   );
 }
@@ -32,4 +42,5 @@ const styles = StyleSheet.create({
     top: 0,
     height: "100%",
   },
+  appointement: { marginTop: 50, marginBottom: 150 },
 });
