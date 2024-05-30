@@ -26,8 +26,8 @@ export default function ChangeContactScreen({ navigation }) {
     lastName: "",
     email: "",
     password: "",
+    newPassword: "",
   });
-  console.log("user", user);
   const handleClick = () => {
     updatePatient();
   };
@@ -40,7 +40,7 @@ export default function ChangeContactScreen({ navigation }) {
   }, []);
 
   const updatePatient = async () => {
-    const { firstName, lastName, email } = formData;
+    const { firstName, lastName, email, password, newPassword } = formData;
     const options = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -48,6 +48,8 @@ export default function ChangeContactScreen({ navigation }) {
         firstName,
         lastName,
         email,
+        password,
+        newPassword,
       }),
     };
     const response = await fetch(
@@ -62,6 +64,7 @@ export default function ChangeContactScreen({ navigation }) {
         lastName: "",
         email: "",
         password: "",
+        newPassword: "",
       });
       onRefresh();
     } else {
@@ -138,6 +141,13 @@ export default function ChangeContactScreen({ navigation }) {
             updateValue={updateValue}
             label="Mot de passe"
             name="password"
+            secureTextEntry
+          />
+          <FloatingTextInput
+            value={formData.newPassword}
+            updateValue={updateValue}
+            label="Nouveau mot de passe"
+            name="newPassword"
             secureTextEntry
           />
           <TouchableOpacity style={styles.btn} onPress={() => handleClick()}>

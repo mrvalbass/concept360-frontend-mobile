@@ -34,7 +34,7 @@ export default function AppointmentCard({}) {
       setSpecialistData(response.specialists);
     })();
   }, []);
-  console.log("spe is", specialistData);
+
   if (specialistData === null) {
     return (
       <View>

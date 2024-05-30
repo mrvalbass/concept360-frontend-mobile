@@ -86,6 +86,7 @@ export default function SignInModal({ navigation, signInOpen, setSignInOpen }) {
           updateValue={updateValue}
           label="Mot de passe"
           name="password"
+          secureTextEntry
         />
         <Pressable style={styles.connect} onPress={handleCloseSignIn}>
           <Text style={styles.btnText}>Connecter</Text>
