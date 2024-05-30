@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, SafeAreaView, Linking } from "react-native";
+import { View, Text, StyleSheet, SafeAreaView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import AppointmentCard from "../components/AppointementCard";
 
@@ -23,7 +23,7 @@ export default function AppointmentScreen({}) {
       >
         Prendre un rendez-vous :
       </Text>
-      <View style={styles.appointement}>
+      <View style={styles.appointment}>
         <AppointmentCard />
       </View>
     </SafeAreaView>
@@ -42,5 +42,8 @@ const styles = StyleSheet.create({
     top: 0,
     height: "100%",
   },
-  appointement: { marginTop: 50, marginBottom: 150 },
+  appointment: {
+    marginTop: 50,
+    marginBottom: 150,
+  },
 });

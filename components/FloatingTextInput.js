@@ -35,7 +35,7 @@ export default function FloatingTextInput({
     }),
     alignSelf: "flex-start",
     paddingHorizontal: 6,
-    backgroundColor: "#067D5D",
+    backgroundColor: "#fff",
   };
 
   const viewStyles = {

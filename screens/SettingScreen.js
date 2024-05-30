@@ -41,7 +41,7 @@ export default function SettingScreen({ navigation, ChangeContactScreen }) {
           <View style={{ flexDirection: "column" }}>
             <Text style={styles.text}>Notification</Text>
             <Text style={{ color: "#fff", fontSize: 10 }}>
-              Gerez vos notifications
+              Gérez vos notifications
             </Text>
           </View>
           <FontAwesome
