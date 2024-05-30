@@ -34,7 +34,6 @@ export default function AppointmentCard({}) {
       setSpecialistData(response.specialists);
     })();
   }, []);
-
   if (specialistData === null) {
     return (
       <View style={{ alignItems: "center", justifyContent: "center" }}>

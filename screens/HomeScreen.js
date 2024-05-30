@@ -1,28 +1,26 @@
 import {
-  View,
   Text,
   StyleSheet,
-  Image,
-  Button,
-  SafeAreaView,
   RefreshControl,
   ScrollView,
+  SafeAreaView,
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import * as ImagePicker from "expo-image-picker";
+
 import { useState, useEffect, useCallback } from "react";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { useSelector } from "react-redux";
 import { addPhoto } from "../reducers/user";
-import { useDispatch } from "react-redux";
+
+import { LinearGradient } from "expo-linear-gradient";
+import CalendarStrip from "react-native-calendar-strip";
+import moment from "moment";
+
 import CalendarInline from "../components/CalendarInLine";
 import Profil from "../components/Profil";
-import moment from "moment";
 import ProgramCard from "../components/ProgramCard";
 
 export default function HomeScreen({ navigation }) {
-  const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.value);
+  const [selectedDate, setSelectedDate] = useState(
+    moment(new Date()).startOf("day")
+  );
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = useCallback(() => {
@@ -33,7 +31,7 @@ export default function HomeScreen({ navigation }) {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <LinearGradient
         style={StyleSheet.absoluteFillObject}
         colors={["#034A37", "#067D5D", "#00A5AC"]}
@@ -53,19 +51,37 @@ export default function HomeScreen({ navigation }) {
         }
       >
         <Profil greeting editable />
-        <View style={styles.calendar}>
-          <ScrollView>
-            <CalendarInline />
-          </ScrollView>
-        </View>
+        <CalendarStrip
+          scrollable
+          style={styles.calendar}
+          calendarColor={"transparent"}
+          calendarHeaderStyle={styles.calendar}
+          dateNumberStyle={{ color: "white" }}
+          dateNameStyle={{ color: "white" }}
+          iconContainer={{ flex: 0.1 }}
+        />
+        <Text style={styles.title}>
+          Programme du {moment(selectedDate).format("DD/MM")}
+        </Text>
+        <ScrollView>
+          <ProgramCard selectedDate={selectedDate} navigation={navigation} />
+        </ScrollView>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+
+  calendar: {},
+
+  calendarHeader: {
+    color: "white",
+    alignSelf: "flex-end",
+    paddingRight: 30,
   },
 
   title: {

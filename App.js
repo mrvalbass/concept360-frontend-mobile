@@ -8,7 +8,6 @@ import user from "./reducers/user";
 
 import LoginScreen from "./screens/LoginScreen";
 import HomeScreen from "./screens/HomeScreen";
-import DocumentScreen from "./screens/DocumentScreen";
 import AppointmentScreen from "./screens/AppointmentScreen";
 import SettingScreen from "./screens/SettingScreen";
 import ChangeContactScreen from "./screens/ChangeContactScreen";
@@ -66,7 +65,7 @@ const TabNavigator = () => {
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Document" component={DocumentScreen} />
+      {/* <Tab.Screen name="Document" component={DocumentScreen} /> */}
       <Tab.Screen name="Appointment" component={AppointmentScreen} />
       <Tab.Screen name="Setting" component={SettingStackScreen} />
     </Tab.Navigator>
