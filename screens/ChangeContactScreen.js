@@ -83,7 +83,7 @@ export default function ChangeContactScreen({ navigation }) {
     <View style={styles.container}>
       <LinearGradient
         style={styles.gradient}
-        colors={["rgba(2,0,36,1)", "rgba(6,125,93,1)", "rgba(0,165,172,1)"]}
+        colors={["#034A37", "#067D5D", "#00A5AC"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         locations={[0.1, 0.4, 1]}
@@ -200,6 +200,5 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
     color: "#fff",
-    fontFamily: "Roboto-Regular",
   },
 });

@@ -1,19 +1,20 @@
 import {
   Text,
+  View,
   StyleSheet,
   RefreshControl,
   ScrollView,
   SafeAreaView,
 } from "react-native";
 
-import { useState, useEffect, useCallback } from "react";
-import { addPhoto } from "../reducers/user";
+import { useState, useCallback } from "react";
 
 import { LinearGradient } from "expo-linear-gradient";
 import CalendarStrip from "react-native-calendar-strip";
+import CalendarModal from "../components/CalendarModal";
 import moment from "moment";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
-import CalendarInline from "../components/CalendarInLine";
 import Profil from "../components/Profil";
 import ProgramCard from "../components/ProgramCard";
 
@@ -22,6 +23,7 @@ export default function HomeScreen({ navigation }) {
     moment(new Date()).startOf("day")
   );
   const [refreshing, setRefreshing] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -32,6 +34,12 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
+      <CalendarModal
+        selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
+        showModal={showModal}
+        setShowModal={setShowModal}
+      />
       <LinearGradient
         style={StyleSheet.absoluteFillObject}
         colors={["#034A37", "#067D5D", "#00A5AC"]}
@@ -55,17 +63,29 @@ export default function HomeScreen({ navigation }) {
           scrollable
           style={styles.calendar}
           calendarColor={"transparent"}
-          calendarHeaderStyle={styles.calendar}
+          calendarHeaderStyle={styles.calendarHeader}
           dateNumberStyle={{ color: "white" }}
           dateNameStyle={{ color: "white" }}
+          onDateSelected={(value) =>
+            setSelectedDate(moment(new Date(value)).startOf("day"))
+          }
           iconContainer={{ flex: 0.1 }}
+          selectedDate={selectedDate}
         />
-        <Text style={styles.title}>
-          Programme du {moment(selectedDate).format("DD/MM")}
-        </Text>
-        <ScrollView>
-          <ProgramCard selectedDate={selectedDate} navigation={navigation} />
-        </ScrollView>
+        <View>
+          <FontAwesome
+            name="calendar"
+            size={25}
+            style={styles.calendarIcon}
+            onPress={() => setShowModal(true)}
+          />
+          <Text style={styles.title}>
+            Programme du {moment(selectedDate).format("DD/MM")}
+          </Text>
+          <ScrollView>
+            <ProgramCard selectedDate={selectedDate} navigation={navigation} />
+          </ScrollView>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -76,12 +96,26 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
-  calendar: {},
+  calendar: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
 
   calendarHeader: {
     color: "white",
     alignSelf: "flex-end",
     paddingRight: 30,
+    paddingVertical: 5,
+  },
+
+  calendarIcon: {
+    position: "absolute",
+    color: "white",
+    top: 10,
+    left: 40,
+    width: 40,
+    height: 40,
+    textAlign: "center",
   },
 
   title: {
@@ -89,6 +123,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 20,
     color: "#fff",
-    marginBottom: 20,
+    marginVertical: 20,
   },
 });

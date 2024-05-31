@@ -70,14 +70,15 @@ export default function LoginScreen({ navigation }) {
         isLooping
         style={StyleSheet.absoluteFillObject}
       />
+
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>Concept</Text>
+        <Text style={styles.title}>360</Text>
+      </View>
       <View style={styles.containerBtn}>
         <LinearGradient
           style={styles.gradient}
-          colors={[
-            "rgba(2,0,36,0.7)",
-            "rgba(6,125,93,0.7)",
-            "rgba(0,165,172,0.7)",
-          ]}
+          colors={["#034A37", "#067D5D", "#00A5AC"]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
           locations={[0.1, 0.5, 1]}
@@ -101,7 +102,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
+  },
+
+  titleContainer: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 5,
+    marginTop: "50%",
+  },
+
+  title: {
+    fontWeight: "900",
+    fontSize: 100,
+    color: "#067D5D",
+    textAlign: "center",
   },
 
   containerBtn: {
