@@ -5,6 +5,8 @@ import {
   Linking,
   Image,
   Text,
+  ActivityIndicator,
+  Pressable,
 } from "react-native";
 import { useEffect, useState } from "react";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -36,15 +38,19 @@ export default function AppointmentCard({}) {
   }, []);
   if (specialistData === null) {
     return (
-      <View style={{ alignItems: "center", justifyContent: "center" }}>
-        <Text style={{ color: "#fff", fontSize: 20 }}>is loading ...</Text>
+      <View style={{ flex: 1, marginVertical: 20 }}>
+        <ActivityIndicator size={"large"} color={"#ffffff"} />
       </View>
     );
   }
 
   const link = specialistData?.map((specialist, i) => {
     return (
-      <View key={i} style={styles.containerSpe}>
+      <Pressable
+        key={i}
+        style={styles.containerSpe}
+        onPress={() => openURL(specialist.lien)}
+      >
         <View style={{ flexDirection: "row", gap: 15 }}>
           <Image
             source={{ uri: specialist.user.profilePictureURL }}
@@ -52,21 +58,17 @@ export default function AppointmentCard({}) {
           />
           <View>
             <View style={styles.containerInfo}>
-              <Text style={styles.textName}>{specialist.user.lastName}</Text>
-              <Text style={styles.textName}>{specialist.user.firstName}</Text>
+              <Text style={styles.textName}>
+                {specialist.user.firstName} {specialist.user.lastName}
+              </Text>
             </View>
             <View>
               <Text style={styles.textDiscipline}>{specialist.discipline}</Text>
             </View>
           </View>
         </View>
-        <FontAwesome
-          name="angle-double-right"
-          size={25}
-          style={styles.icon}
-          onPress={() => openURL(specialist.lien)}
-        />
-      </View>
+        <FontAwesome name="angle-double-right" size={25} style={styles.icon} />
+      </Pressable>
     );
   });
 
@@ -80,9 +82,15 @@ export default function AppointmentCard({}) {
 }
 
 const styles = StyleSheet.create({
+  test: {
+    marginVertical: 20,
+    fontSize: 20,
+    gap: 35,
+  },
   containerSpe: {
     justifyContent: "space-between",
-    padding: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 15,
     width: 325,
     borderRadius: 5,
     backgroundColor: "#067D5D",
@@ -91,11 +99,6 @@ const styles = StyleSheet.create({
   containerInfo: {
     flexDirection: "row",
     gap: 10,
-  },
-  test: {
-    marginVertical: 20,
-    fontSize: 20,
-    gap: 20,
   },
   textName: {
     fontSize: 20,

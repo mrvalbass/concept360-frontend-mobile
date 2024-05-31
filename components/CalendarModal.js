@@ -1,17 +1,12 @@
-import React, { useState } from "react";
-import { View, StyleSheet, TouchableOpacity, Text, Modal } from "react-native";
+import { View, StyleSheet, Modal, Pressable } from "react-native";
 import { Calendar } from "react-native-calendars";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
-const Stack = createNativeStackNavigator();
+import moment from "moment";
 
 export default function CalendarModal({
   showModal,
   setShowModal,
-  setValue,
-  value,
-  navigateToSlide,
+  setSelectedDate,
+  selectedDate,
 }) {
   return (
     <Modal
@@ -20,25 +15,30 @@ export default function CalendarModal({
       visible={showModal}
       onRequestClose={() => setShowModal(false)}
     >
-      <View
+      <Pressable
         style={{
           flex: 1,
           alignItems: "center",
           justifyContent: "center",
           backgroundColor: "rgba(0,0,0,0.5)",
         }}
+        onPress={() => setShowModal(false)}
       >
         <View style={styles.modalView}>
-          <Text>{value.toISOString().slice(0, 10)}</Text>
           <Calendar
-            current={value.toISOString().slice(0, 10)}
+            markedDates={{
+              [selectedDate.format("YYYY-MM-DD")]: {
+                selected: true,
+                selectedColor: "#067D5D",
+              },
+            }}
             onDayPress={(day) => {
-              setValue(new Date(day.dateString));
+              setSelectedDate(moment(new Date(day.dateString)).startOf("day"));
               setShowModal(false);
             }}
           />
         </View>
-      </View>
+      </Pressable>
     </Modal>
   );
 }
@@ -52,16 +52,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     elevation: 5,
     gap: 25,
-  },
-  closeButton: {
-    marginTop: 20,
-    backgroundColor: "#067D5D",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-  },
-  closeButtonText: {
-    color: "white",
-    fontSize: 16,
   },
 });

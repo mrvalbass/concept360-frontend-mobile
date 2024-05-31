@@ -1,13 +1,13 @@
 import { View, Text, StyleSheet, SafeAreaView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import AppointmentCard from "../components/AppointementCard";
+import AppointmentCard from "../components/AppointmentCard";
 
 export default function AppointmentScreen({}) {
   return (
     <SafeAreaView style={styles.container}>
       <LinearGradient
         style={styles.gradient}
-        colors={["rgba(2,0,36,1)", "rgba(6,125,93,1)", "rgba(0,165,172,1)"]}
+        colors={["#034A37", "#067D5D", "#00A5AC"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         locations={[0.1, 0.4, 1]}
@@ -42,10 +42,7 @@ const styles = StyleSheet.create({
     top: 0,
     height: "100%",
   },
-  appointement: {
+  appointment: {
     marginTop: 50,
-    marginBottom: 150,
-    width: "100%",
-    paddingLeft: 30,
   },
 });

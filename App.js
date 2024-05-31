@@ -22,23 +22,6 @@ const store = configureStore({
   reducer: { user },
 });
 
-function SettingStackScreen() {
-  return (
-    <SettingStack.Navigator>
-      <SettingStack.Screen
-        name="Setting"
-        component={SettingScreen}
-        options={{ title: "Paramètres", headerShown: false }}
-      />
-      <SettingStack.Screen
-        name="ChangeContact"
-        component={ChangeContactScreen}
-        options={{ tabBarLabel: "Mon profil!", headerShown: false }}
-      />
-    </SettingStack.Navigator>
-  );
-}
-
 const TabNavigator = () => {
   return (
     <Tab.Navigator
@@ -67,7 +50,7 @@ const TabNavigator = () => {
       <Tab.Screen name="Home" component={HomeScreen} />
       {/* <Tab.Screen name="Document" component={DocumentScreen} /> */}
       <Tab.Screen name="Appointment" component={AppointmentScreen} />
-      <Tab.Screen name="Setting" component={SettingStackScreen} />
+      <Tab.Screen name="Setting" component={SettingScreen} />
     </Tab.Navigator>
   );
 };
@@ -79,6 +62,7 @@ export default function App() {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Daily" component={DailyScreen} />
+          <Stack.Screen name="ChangeContact" component={ChangeContactScreen} />
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
         </Stack.Navigator>
         <Stack.Screen name="ChangeContact" component={ChangeContactScreen} />
